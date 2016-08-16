@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="调度单" />
+	<property name="rootTableName" value="HIVE.AR_ARGMT" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<daoSpec shortName="HIVE.AR_DSPCH_ORD" desc="调度单">
+					<selectSpec subject="DspchOrdBasic" tableName="HIVE.AR_DSPCH_ORD" defaultOrderBy="updTm" desc="调度单">
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT" desc="合约">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="argmtId" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_FCLTY_REL" desc="合约与参与方之间的关系">
+								<oneToOne fatherAttr="fcltyId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.FL_FCLTY" desc="设施与设备">
+										<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+											<selectSpec tableName="HIVE.FL_VECL" desc="车辆">
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+
+						<!--<oneToMany listOfSon="argmtRelList" fatherAttr="id" sonAttr="leftId">
+							<selectSpec tableName="HIVE.AR_ARGMT_REL" desc="调度单与送货单之间的关系">
+								<resultFilter attribute="editFlag"/>
+								<oneToOne fatherAttr="rightId" sonAttr="id">									
+									<selectSpec tableName="HIVE.AR_DELIV_ORD" desc="送货单信息">
+										<oneToOne fatherAttr="id" sonAttr="id">
+											<selectSpec tableName="HIVE.AR_ARGMT" desc="送货单详细信息">
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>										
+								</oneToOne>
+							</selectSpec>
+						</oneToMany> -->
+					</selectSpec>
+				</daoSpec>
+
+				<!-- OPR接口说明 ，oprSpec的shortName决定了OPR接口的名称-->
+				<oprSpec shortName="HIVE.AR_DSPCH_ORD" desc="${cnName}数据操作">
+
+					<!-- addSpec的subject（如果有）决定了new方法和append方法的名称，tableName决定了方法入参DTOX的名字 -->
+					<addSpec subject="DspchOrd" tableName="HIVE.AR_DSPCH_ORD" desc="调度单">
+						<insertSpec tableName="${rootTableName}" desc="${cnName}" insertExpr="catCd=CmCatSysCode.ArgmtDspchOrd; editFlag=CmCatSysCode.RevisionNew.cd()" enableSelectKey="true">
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.AR_DSPCH_ORD" desc="调度单">
+								</insertSpec>
+							</oneToOne>
+							<oneToOne fatherAttr="id" sonAttr="argmtId">
+								<insertSpec tableName="HIVE.AR_ARGMT_FCLTY_REL" desc="调度单与车辆的关系">
+								</insertSpec>
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+					<removeSpec tableName="HIVE.AR_DSPCH_ORD" desc="删除调度单">
+					</removeSpec>
+				</oprSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

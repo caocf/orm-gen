@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方" />
+	<property name="rootTableName" value="HIVE.IP_PTY" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- DAO接口说明，shortName决定了DAO的名称 -->
+				<daoSpec shortName="${rootTableName}" desc="${cnName}">
+
+					<selectSpec selectPrefix="distinct" subject="PtyList" tableName="${rootTableName}" defaultOrderBy="updTm" desc="查询${cnName}">
+						<includedAttr name="id" />
+						<includedAttr name="cd" />
+						<excludedAttr name="nmCn" />
+						<excludedAttr name="nmEn" />
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<!-- listOfSon和refToSon的作用是，当在一个DTO中有两个以上类型相同的VO或DTOX List，然而又分别代表不同含义，则可以用指定的变量名称来区分。 -->
+						<oneToMany listOfSon="aList" fatherAttr="id" sonAttr="leftId">
+							<selectSpec tableName="HIVE.IP_PTY_ARGMT">
+							</selectSpec>
+						</oneToMany>
+						<oneToOne refToSon="aVo" fatherAttr="id" sonAttr="leftId" joinType="inner">
+							<selectSpec tableName="HIVE.IP_PTY_REL">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+
+					<!-- 这三个方法是DAO中默认生成的，采用JAXB构建Bean模拟配置信息 -->
+					<insertSpec tableName="${rootTableName}" desc="插入${cnName}" enableSelectKey="true" />
+					<updateByPKSpec tableName="${rootTableName}" desc="更新${cnName}" />
+					<updateBySqlSpec tableName="${rootTableName}" desc="更新${cnName}" />
+
+				</daoSpec>
+
+				<trxSpec>
+
+					<ctxSpec>
+					</ctxSpec>
+
+					<!-- OPR接口说明 ，oprSpec的shortName决定了OPR接口的名称-->
+					<oprSpec shortName="${rootTableName}" desc="访问IP的OPR">
+						
+						<!-- addSpec的subject（如果有）决定了new方法和append方法的名称，tableName决定了方法入参DTOX的名字 -->
+						<addSpec tableName="${rootTableName}" desc="新增${cnName}">
+							
+							<!-- insertSpec的tableName决定了需要引用的DAO，VO的值由addSpec提供的DTOX中获取 -->
+							<insertSpec tableName="HIVE.IP_PTY" desc="插入参与方" enableSelectKey="true">
+								<!-- oneToMany和oneToOne可以定义DTO中VO属性refToSon的名字,或列表listOfSon的名字。如果没定义，则以其下insertSpec中的tableName为准来定义Mapper中bean、DTO中的属性和getter方法 -->
+								<!-- VO的值从addSpec提供的DTOX中获取 -->
+								<!-- 目前在insertSpec下面的oneToMany和oneToOne中暂时只支持insertSpec -->
+								<!-- 如果在selectSpec中指定了refToSon或listOfSon，要在oprSpec中定义相同的属性 -->
+								<oneToMany listOfSon="aList">
+									<insertSpec tableName="HIVE.IP_PTY_ARGMT" desc="插入参与方与合约间关系" />
+								</oneToMany>
+								<oneToOne refToSon="aVo">
+									<insertSpec tableName="HIVE.IP_PTY_REL" desc="插入参与方间关系">
+										<oneToOne refToSon="bVo">
+											<insertSpec tableName="HIVE.IP_PTY" desc="插入参与方" />
+										</oneToOne>
+									</insertSpec>
+								</oneToOne>
+							</insertSpec>
+						</addSpec>
+						<changeSpec tableName="${rootTableName}" desc="更改${cnName}">
+						</changeSpec>
+						<removeSpec tableName="${rootTableName}" desc="删除${cnName}">
+						</removeSpec>
+					</oprSpec>
+
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

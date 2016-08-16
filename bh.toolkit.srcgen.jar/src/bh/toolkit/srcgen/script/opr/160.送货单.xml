@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="送货单" />
+	<property name="rootTableName" value="HIVE.AR_ARGMT" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<daoSpec shortName="HIVE.AR_DELIV_ORD" desc="送货单">
+
+					<!-- 查询是否需要同步 -->
+					<selectSpec subject="NeedSynToDDK" tableName="${rootTableName}" defaultOrderBy="updTm" desc="需要同步的订单">
+						<resultFilter attribute="statCd" comparator="like" value="'%2205.245.310%'" />
+						<resultFilter begin="AND (" attribute="syncFlag" comparator="=" value="'1111.200.300'" />
+						<resultFilter begin="OR" attribute="syncFlag" comparator="=" value="'1111.210'" />
+						<resultFilter begin="OR" attribute="syncFlag" comparator="=" value="'1111.200.310'" />
+						<resultFilter begin="OR" end=")" attribute="syncFlag" comparator="=" value="'1111.200.305'" />
+					</selectSpec>
+
+					<selectSpec subject="AbnormalOrd" tableName="${rootTableName}" defaultOrderBy="updTm" desc="已经取消、完成或删除的订单">
+						<resultFilter attribute="editFlag" comparator="IS NOT" value="NULL" />
+						<resultFilter begin="AND (" attribute="statCd" comparator="like" value="'2205.245.315%'" />
+						<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.400'" />
+						<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.405'" />
+						<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.320.410'" />
+						<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.320.400'" />
+						<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.300'" />
+						<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.305'" />
+						<resultFilter begin="OR" end=")" attribute="editFlag" comparator="=" value="'1100.210'" />
+					</selectSpec>
+
+					<selectSpec subject="DelivOrdBasic" tableName="HIVE.AR_DELIV_ORD" defaultOrderBy="updTm" desc="送货单">
+						<includedAttr name="crtTm" />
+						<includedAttr name="id" />
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT">
+								<!-- <includedAttr name="catCd" /> -->
+								<!-- <includedAttr name="catNmCn" /> -->
+								<includedAttr name="cd" />
+								<includedAttr name="crtBy" />
+								<includedAttr name="crtChlCd" />
+								<includedAttr name="crtTm" />
+								<!-- <includedAttr name="editFlag" /> -->
+								<includedAttr name="id" />
+								<includedAttr name="memo" />
+								<includedAttr name="memo2" />
+								<includedAttr name="memo3" />
+								<includedAttr name="ordDt" />
+								<includedAttr name="ordMon" />
+								<includedAttr name="ordTm" />
+								<includedAttr name="ordYr" />
+								<includedAttr name="qty" />
+								<includedAttr name="statCd" />
+								<includedAttr name="statNmCn" />
+								<includedAttr name="syncFlag" />
+								<includedAttr name="updBy" />
+								<includedAttr name="updChlCd" />
+								<includedAttr name="updTm" />
+								<includedAttr name="vol" />
+								<includedAttr name="volMuCd" />
+								<includedAttr name="volMuNmCn" />
+								<includedAttr name="wgt" />
+								<includedAttr name="wgtMuCd" />
+								<includedAttr name="wgtMuNmCn" />
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<resultFilter begin="AND(" attribute="statCd" comparator="=" value="'2205.245.310.410'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.415'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.420'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.320.405'" />
+								<resultFilter begin="OR" end=")" attribute="statCd" comparator="=" value="'2205.245.320.415'" />
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="rightId" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_REL" desc="送货单与调度单的关系">
+								<excludedAttr name="*" />
+								<oneToOne fatherAttr="leftId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.AR_DSPCH_ORD" desc="调度单">
+										<excludedAttr name="*" />
+										<oneToOne fatherAttr="id" sonAttr="argmtId" joinType="inner">
+											<selectSpec tableName="HIVE.AR_ARGMT_FCLTY_REL" desc="调度单与车辆的关系">
+												<excludedAttr name="*" />
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_PTY_LOC_LINK">
+								<includedAttr name="carrCd" />
+								<includedAttr name="carrId" />
+								<includedAttr name="carrNmCn" />
+								<includedAttr name="cltCd" />
+								<includedAttr name="cltId" />
+								<includedAttr name="cltNmCn" />
+								<includedAttr name="crtBy" />
+								<includedAttr name="crtTm" />
+								<includedAttr name="csneeCd" />
+								<includedAttr name="csneeId" />
+								<includedAttr name="csneeLocId" />
+								<includedAttr name="csneeLocNmCn" />
+								<includedAttr name="csneeNmCn" />
+								<includedAttr name="csnorCd" />
+								<includedAttr name="csnorId" />
+								<includedAttr name="csnorNmCn" />
+								<includedAttr name="editFlag" />
+								<includedAttr name="id" />
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+
+					<selectSpec subject="DelivOrdOnVecl" tableName="HIVE.AR_DELIV_ORD" defaultOrderBy="updTm" desc="车辆上的送货单">
+						<includedAttr name="crtTm" />
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT">
+								<includedAttr name="id" />
+								<includedAttr name="cd" />
+								<includedAttr name="memo" />
+								<includedAttr name="memo2" />
+								<includedAttr name="memo3" />
+								<includedAttr name="qty" />
+								<includedAttr name="vol" />
+								<includedAttr name="wgt" />
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<resultFilter begin="AND(" attribute="statCd" comparator="=" value="'2205.245.310.410'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.415'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.420'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.320.405'" />
+								<resultFilter begin="OR" end=")" attribute="statCd" comparator="=" value="'2205.245.320.415'" />
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="rightId" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_REL" desc="送货单与调度单的关系">
+								<excludedAttr name="*" />
+								<oneToOne fatherAttr="leftId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.AR_DSPCH_ORD" desc="调度单">
+										<excludedAttr name="*" />
+										<oneToOne fatherAttr="id" sonAttr="argmtId" joinType="inner">
+											<selectSpec tableName="HIVE.AR_ARGMT_FCLTY_REL" desc="调度单与车辆的关系">
+												<excludedAttr name="*" />
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_PTY_LOC_LINK">
+								<includedAttr name="csneeNmCn" />
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+
+					<selectSpec subject="DelivOrd" tableName="HIVE.AR_DELIV_ORD" defaultOrderBy="updTm" desc="送货单">
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<resultFilter begin="AND(" attribute="statCd" comparator="=" value="'2205.245.310.410'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.415'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.420'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.320.405'" />
+								<resultFilter begin="OR" end=")" attribute="statCd" comparator="=" value="'2205.245.320.415'" />
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="rightId" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_REL" desc="送货单与调度单的关系">
+								<oneToOne fatherAttr="leftId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.AR_DSPCH_ORD" desc="调度单">
+										<oneToOne fatherAttr="id" sonAttr="argmtId" joinType="inner">
+											<selectSpec tableName="HIVE.AR_ARGMT_FCLTY_REL" desc="调度单与车辆的关系">
+												<oneToOne fatherAttr="fcltyId" sonAttr="id" joinType="inner">
+													<selectSpec tableName="HIVE.FL_FCLTY" desc="车辆">
+														<oneToOne fatherAttr="id" sonAttr="id" joinType="left">
+															<selectSpec tableName="HIVE.FL_FCLTY_PTY_LINK" desc="车辆与组织的关系">
+																<oneToOne fatherAttr="drvrId" sonAttr="id" joinType="left">
+																	<selectSpec tableName="HIVE.IP_PERSON" desc="司机">
+																	</selectSpec>
+																</oneToOne>
+															</selectSpec>
+														</oneToOne>
+														<oneToOne fatherAttr="id" sonAttr="id" joinType="left">
+															<selectSpec tableName="HIVE.FL_VECL" desc="车辆信息">
+															</selectSpec>
+														</oneToOne>
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_PTY_LOC_LINK">
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+
+					<selectSpec subject="DelivOrdDetail" tableName="HIVE.AR_DELIV_ORD" defaultOrderBy="updTm" desc="送货单详细信息">
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<resultFilter begin="AND(" attribute="statCd" comparator="=" value="'2205.245.310.410'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.415'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.420'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.320.405'" />
+								<resultFilter begin="OR" end=")" attribute="statCd" comparator="=" value="'2205.245.320.415'" />
+								<oneToOne fatherAttr="id" sonAttr="rightId" joinType="inner">
+									<selectSpec tableName="HIVE.AR_ARGMT_REL">
+										<oneToOne fatherAttr="leftId" sonAttr="id" joinType="inner">
+											<selectSpec tableName="HIVE.AR_DSPCH_ORD" desc="调度单">
+												<oneToOne fatherAttr="id" sonAttr="argmtId" joinType="inner">
+													<selectSpec tableName="HIVE.AR_ARGMT_FCLTY_REL" desc="调度单关联的车">
+														<oneToOne fatherAttr="fcltyId" sonAttr="id" joinType="inner">
+															<selectSpec tableName="HIVE.FL_FCLTY" desc="车辆">
+																<oneToOne fatherAttr="id" sonAttr="id" joinType="left">
+																	<selectSpec tableName="HIVE.FL_FCLTY_PTY_LINK" desc="车辆与组织的关系">
+																		<oneToOne fatherAttr="drvrId" sonAttr="id" joinType="left">
+																			<selectSpec tableName="HIVE.IP_PERSON" desc="司机">
+																			</selectSpec>
+																		</oneToOne>
+																	</selectSpec>
+																</oneToOne>
+																<oneToOne fatherAttr="id" sonAttr="id" joinType="left">
+																	<selectSpec tableName="HIVE.FL_VECL" desc="车辆信息">
+																	</selectSpec>
+																</oneToOne>
+															</selectSpec>
+														</oneToOne>
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_PTY_LOC_LINK" desc="送货单的参与方及位置">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<oneToOne refToSon="csneePtyLoc" fatherAttr="csneeLocId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.LC_PTY_LOC" tableAlias="CSNEE_PTY_LOC" desc="收货方及位置">
+										<oneToOne refToSon="csneeLoc" fatherAttr="locId" sonAttr="id" joinType="left">
+											<selectSpec tableName="HIVE.LC_LOC" tableAlias="CSNEE_LOC" desc="收货方标准地址">
+												<oneToOne refToSon="csneeGeoAddr" fatherAttr="id" sonAttr="id" joinType="left">
+													<selectSpec tableName="HIVE.LC_GEO_ADDR" tableAlias="CSNEE_GEO_ADDR" desc="收货方经纬度">
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+
+								<oneToOne refToSon="csnorPtyLoc" fatherAttr="csnorLocId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.LC_PTY_LOC" tableAlias="CSNOR_PTY_LOC" desc="发货方及位置">
+										<oneToOne refToSon="csnorLoc" fatherAttr="locId" sonAttr="id" joinType="left">
+											<selectSpec tableName="HIVE.LC_LOC" tableAlias="CSNOR_LOC" desc="发货方标准地址">
+												<oneToOne refToSon="csnorGeoAddr" fatherAttr="id" sonAttr="id" joinType="left">
+													<selectSpec tableName="HIVE.LC_GEO_ADDR" tableAlias="CSNOR_GEO_ADDR" desc="发货方经纬度">
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+
+								<oneToOne refToSon="cltPtyLoc" fatherAttr="cltLocId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.LC_PTY_LOC" tableAlias="CLT_PTY_LOC" desc="供应商及位置">
+										<oneToOne refToSon="cltLoc" fatherAttr="locId" sonAttr="id" joinType="left">
+											<selectSpec tableName="HIVE.LC_LOC" tableAlias="CLT_LOC" desc="供应商标准地址">
+												<oneToOne refToSon="cltGeoAddr" fatherAttr="id" sonAttr="id" joinType="left">
+													<selectSpec tableName="HIVE.LC_GEO_ADDR" tableAlias="CLT_GEO_ADDR" desc="供应商经纬度">
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+
+							</selectSpec>
+						</oneToOne>
+
+						<!--
+						<oneToMany listOfSon="delivOrdItmList" fatherAttr="id" sonAttr="leftId">
+							<selectSpec tableName="HIVE.AR_ARGMT_ITM">
+								<oneToOne fatherAttr="id" sonAttr="id">
+									<selectSpec tableName="HIVE.AR_DELIV_ORD_ITM">
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToMany>
+						-->
+
+					</selectSpec>
+
+					<selectSpec subject="MovingDelivOrd" tableName="HIVE.AR_DELIV_ORD" defaultOrderBy="updTm" desc="查询送货单动态信息">
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<resultFilter begin="AND(" attribute="statCd" comparator="=" value="'2205.245.310.410'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.415'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.310.420'" />
+								<resultFilter begin="OR" attribute="statCd" comparator="=" value="'2205.245.320.405'" />
+								<resultFilter begin="OR" end=")" attribute="statCd" comparator="=" value="'2205.245.320.415'" />
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="leftId" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_REL" desc="送货单与调度单关系">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<oneToOne fatherAttr="rightId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.AR_ARGMT">
+										<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+										<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+											<selectSpec tableName="HIVE.AR_DELIV_ORD" desc="调度单">
+												<oneToOne fatherAttr="id" sonAttr="argmtId" joinType="right">
+													<selectSpec tableName="HIVE.AR_ARGMT_FCLTY_REL" desc="调度单关联的车">
+														<oneToOne fatherAttr="fcltyId" sonAttr="id" joinType="inner">
+															<selectSpec tableName="HIVE.FL_FCLTY" desc="车辆">
+																<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+																<oneToOne fatherAttr="id" sonAttr="fcltyId" joinType="left">
+																	<selectSpec tableName="HIVE.FL_FCLTY_LOC" desc="车辆当前位置">
+																	</selectSpec>
+																</oneToOne>
+															</selectSpec>
+														</oneToOne>
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_PTY_LOC_LINK" desc="送货单的参与方及位置">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<oneToOne fatherAttr="csneeLocId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.LC_PTY_LOC" desc="收货方及位置">
+										<oneToOne fatherAttr="locId" sonAttr="id" joinType="left">
+											<selectSpec tableName="HIVE.LC_LOC" desc="收获方标准地址">
+												<oneToOne fatherAttr="id" sonAttr="id" joinType="left">
+													<selectSpec tableName="HIVE.LC_GEO_ADDR" desc="收货方经纬度">
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+								<oneToOne fatherAttr="csnorLocId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.LC_PTY_LOC" desc="发货方及位置">
+										<oneToOne fatherAttr="locId" sonAttr="id" joinType="left">
+											<selectSpec tableName="HIVE.LC_LOC" desc="发货方标准地址">
+												<oneToOne fatherAttr="id" sonAttr="id" joinType="left">
+													<selectSpec tableName="HIVE.LC_GEO_ADDR" desc="发货方经纬度">
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+
+				</daoSpec>
+
+				<daoSpec shortName="HIVE.AR_DELIV_ORD_ITM" desc="送货单明细">
+					<selectSpec subject="DelivOrdItm" tableName="HIVE.AR_DELIV_ORD_ITM" defaultOrderBy="updTm" desc="送货单明细">
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_ITM">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+				</daoSpec>
+
+
+				<!-- OPR接口说明 ，oprSpec的shortName决定了OPR接口的名称-->
+				<oprSpec shortName="HIVE.AR_DELIV_ORD" desc="${cnName}数据操作">
+
+					<!-- addSpec的subject（如果有）决定了new方法和append方法的名称，tableName决定了方法入参DTOX的名字 -->
+					<addSpec subject="DelivOrd" tableName="HIVE.AR_DELIV_ORD" desc="送货单">
+						<insertSpec tableName="HIVE.AR_DELIV_ORD" desc="送货单" enableSelectKey="true">
+							<oneToOne fatherAttr="id" sonAttr="rightId">
+								<insertSpec tableName="HIVE.AR_ARGMT_REL" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd();catCd=CmCatSysCode.ArgmtAndArgmtDspchOrdAndDelivOrd.cd();catNmCn=CmCatSysCode.ArgmtAndArgmtDspchOrdAndDelivOrd.nmCn()"  desc="调度单与送货单间的关系">
+								</insertSpec>
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+					<removeSpec tableName="HIVE.AR_DELIV_ORD" desc="删除送货单">
+					</removeSpec>
+
+				</oprSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

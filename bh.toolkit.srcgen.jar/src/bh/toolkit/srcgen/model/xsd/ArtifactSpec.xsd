@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://srcgen.toolkit.bh/model/artifact" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://srcgen.toolkit.bh/model/artifact">
+
+	<complexType name="DatasourceSpec">
+		<attribute name="dbType" type="string">
+			<annotation>
+				<documentation>数据库类型</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="driver" type="string"></attribute>
+		<attribute name="connUrl" type="string"></attribute>
+		<attribute name="user" type="string"></attribute>
+		<attribute name="password" type="string"></attribute>
+		<attribute name="schema" type="string"></attribute>
+	</complexType>
+
+	<complexType name="WorkspaceSpec">
+		<attribute name="svnWorkspace" type="string"></attribute>
+		<attribute name="ideWorkspace" type="string"></attribute>
+		<attribute name="commonPrj" type="string"></attribute>
+		<attribute name="transObjPrj" type="string"></attribute>
+		<attribute name="ormPrj" type="string"></attribute>
+		<attribute name="compDescPrj" type="string"></attribute>
+		<attribute name="mgrPrj" type="string"></attribute>
+		<attribute name="srcPathName" type="string"></attribute>
+        <attribute name="rsrcPathName" type="string"></attribute>
+        <attribute name="pkgPrefix" type="string">
+			<annotation>
+				<documentation>除特别说明外，所有Java包的通用前缀</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="msgCdPkgName" type="string"></attribute>
+        <attribute name="msgPropPkgName" type="string"></attribute>
+        <attribute name="voPkgName" type="string"></attribute>
+		<attribute name="dtoPkgName" type="string"></attribute>
+		<attribute name="mapperPkgName" type="string"></attribute>
+		<attribute name="daoPkgName" type="string"></attribute>
+		<attribute name="oprPkgName" type="string"></attribute>
+		<attribute name="mgrPkgName" type="string"></attribute>
+		<attribute name="ctrlrPkgName" type="string"></attribute>
+	</complexType>
+
+	<complexType name="AttributeSpec">
+		<attribute name="name" type="string"></attribute>
+	</complexType>
+
+	<complexType name="ResultFilterSpec">
+		<attribute name="test" type="string"></attribute>
+		<attribute name="begin" type="string" use="optional"></attribute>
+		<attribute name="attribute" type="string" use="optional"></attribute>
+		<attribute name="comparator" type="string" use="optional"></attribute>
+		<attribute name="value" type="string" use="optional"></attribute>
+		<attribute name="constant" type="string" use="optional"></attribute>
+		<attribute name="end" type="string" use="optional"></attribute>
+		<attribute name="clause" type="string"></attribute>
+	</complexType>
+
+	<complexType name="DaoSpec">
+		<annotation>
+			<documentation>Dao说明</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="tns:ClassSpec">
+				<sequence>
+					<element name="insertSpec" type="tns:InsertSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="selectSpec" type="tns:SelectSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="updateByPKSpec" type="tns:UpdateSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="updateBySqlSpec" type="tns:UpdateSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="deleteByPKSpec" type="tns:DeleteSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="deleteBySqlSpec" type="tns:DeleteSpec" minOccurs="0" maxOccurs="unbounded"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="OprSpec">
+		<complexContent>
+			<extension base="tns:ClassSpec">
+				<sequence>
+					<element name="addSpec" type="tns:OprMethodSpec" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>addSpec被解释为“New”全部新增，和在根表后“Append”追加</documentation>
+						</annotation>
+					</element>
+					<element name="changeSpec" type="tns:OprMethodSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="removeSpec" type="tns:OprMethodSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="deleteSpec" type="tns:OprMethodSpec" minOccurs="0" maxOccurs="unbounded"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="VoSpec">
+		<annotation>
+			<documentation>Vo说明</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="tns:ClassSpec">
+				<sequence>
+					<element name="dbTableSpec" type="tns:DBTableSpec"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ClassSpec">
+		<annotation>
+			<documentation>类说明</documentation>
+		</annotation>
+		<attribute name="pkgName" type="string">
+			<annotation>
+				<documentation>类包名</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="shortName" type="string">
+			<annotation>
+				<documentation>类短名</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="fullName" type="string">
+			<annotation>
+				<documentation>类长名</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="desc" type="string"></attribute>
+	</complexType>
+
+	<complexType name="ArtifactSpec">
+		<sequence>
+			<element name="commonAttrSpec" type="tns:CommonAttrSpec"></element>
+			<element name="voSpec" type="tns:VoSpec" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="daoSpec" type="tns:DaoSpec" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="oprSpec" type="tns:OprSpec" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="trxSpec" type="tns:TrxSpec" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="ctrlrSpec" type="tns:CtrlrSpec" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<element name="artifactSpec" type="tns:ArtifactSpec"></element>
+
+	<complexType name="CommonAttrSpec">
+		<sequence>
+			<element name="datasourceSpec" type="tns:DatasourceSpec"></element>
+			<element name="workspaceSpec" type="tns:WorkspaceSpec"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="TrxSpec">
+		<sequence>
+			<element name="ctxSpec" type="tns:CtxSpec"></element>
+			<element name="mgrSpec" type="tns:MgrSpec" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="CtxSpec">
+		<annotation>
+			<documentation>场景说明，例如当前用户、时间等</documentation>
+		</annotation>
+	</complexType>
+
+	<complexType name="DBTableSpec">
+		<annotation>
+			<documentation>数据对象说明，如果是RDB，则对应于一张数据库表</documentation>
+		</annotation>
+		<attribute name="schema" type="string"></attribute>
+		<attribute name="shortName" type="string">
+			<annotation>
+				<documentation>数据对象短名</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="fullName" type="string">
+			<annotation>
+				<documentation>数据对象长名</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="alias" type="string">
+			<annotation>
+				<documentation>数据对象别名</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+
+	<complexType name="RelationshipSpec">
+		<sequence>
+			<element name="selectSpec" type="tns:SelectSpec"></element>
+			<element name="insertSpec" type="tns:InsertSpec" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="updateByPKSpec" type="tns:UpdateSpec" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="updateBySqlSpec" type="tns:UpdateSpec" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="deleteByPKSpec" type="tns:DeleteSpec" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="deleteBySqlSpec" type="tns:DeleteSpec" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+		<attribute name="listOfSon" type="string" use="optional">
+			<annotation>
+				<documentation>DTO中所包含列表属性的名称，如果为空，则以其下级Spec的表名称为准</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="refToSon" type="string" use="optional">
+			<annotation>
+				<documentation>DTO中所包含VO属性的名称，如果为空，则以其下级Spec的表名称为准</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="refToRel" type="string">
+			<annotation>
+				<documentation>在DTO中指向关系表的VO变量名，如果为空，则以其下级关系表对应insertSpec的表名称为准</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="refToRight" type="string">
+			<annotation>
+				<documentation>在DTO中指向右表的VO变量名，如果为空，则以其下级右边表对应insertSpec的表名称为准</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="fatherAttr" type="string" use="optional">
+			<annotation>
+				<documentation>针对manyToMany，代表左边表中指向关系表的属性；针对oneToOne和oneToMany，代表主表指向子表属性</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="sonAttr" type="string" use="optional">
+			<annotation>
+				<documentation>针对manyToMany，代表右边表中指向关系表的属性；针对oneToOne和oneToMany，代表子表指向主表属性</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="leftAttr" type="string">
+			<annotation>
+				<documentation>关系表中指向左边表的属性</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="rightAttr" type="string">
+			<annotation>
+				<documentation>关系表中指向右边表的属性</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="joinType" type="string" use="optional"></attribute>
+		<attribute name="desc" type="string"></attribute>
+	</complexType>
+
+	<complexType name="SelectSpec">
+		<complexContent>
+			<extension base="tns:MethodSpec">
+				<sequence>
+					<element name="includedAttr" type="tns:AttributeSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="excludedAttr" type="tns:AttributeSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="resultFilter" type="tns:ResultFilterSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="caseFilter" type="tns:CaseFilterSpec" minOccurs="0" maxOccurs="unbounded"></element>
+				</sequence>
+				<attribute name="selectPrefix" type="string"></attribute>
+                <attribute name="defaultOrderBy" type="string"></attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="InsertSpec">
+		<complexContent>
+			<extension base="tns:MethodSpec">
+				<attribute name="enableSelectKey" type="string"></attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="UpdateSpec">
+		<complexContent>
+			<extension base="tns:MethodSpec">
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="MethodSpec">
+		<sequence>
+			<element name="oneToOne" type="tns:RelationshipSpec" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="oneToMany" type="tns:RelationshipSpec" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="manyToMany" type="tns:RelationshipSpec" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+		<attribute name="verb" type="string"></attribute>
+		<attribute name="subject" type="string"></attribute>
+		<attribute name="tableName" type="string"></attribute>
+		<attribute name="tableAlias" type="string"></attribute>
+		<attribute name="paramDataType" type="string"></attribute>
+		<attribute name="insertExpr" type="string">
+			<annotation>
+				<documentation>语句表达式，在转化时不增加双引号</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="updateExpr" type="string">
+			<annotation>
+				<documentation>赋值表达式，在转化时增加双引号</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="returnDataType" type="string"></attribute>
+		<attribute name="expCode" type="string">
+			<annotation>
+				<documentation>异常代码</documentation>
+			</annotation>
+		</attribute>
+        <attribute name="skipVerb" type="string">
+			<annotation>
+				<documentation>需要跳过不执行的verb，以单字节逗号分隔</documentation>
+			</annotation>
+		</attribute>
+        <attribute name="desc" type="string"></attribute>
+	</complexType>
+
+	<complexType name="DeleteSpec">
+		<complexContent>
+			<extension base="tns:MethodSpec">
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="OprMethodSpec">
+		<complexContent>
+			<extension base="tns:MethodSpec">
+				<sequence>
+					<element name="insertSpec" type="tns:InsertSpec" minOccurs="0" maxOccurs="unbounded">
+					</element>
+					<element name="updateSpec" type="tns:UpdateSpec" minOccurs="0" maxOccurs="unbounded">
+					</element>
+					<element name="deleteSpec" type="tns:DeleteSpec" minOccurs="0" maxOccurs="unbounded">
+					</element>
+
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="MgrSpec">
+		<complexContent>
+			<extension base="tns:ClassSpec">
+				<sequence>
+                    <element name="mgrSpec" type="tns:MgrSpec" minOccurs="0" maxOccurs="unbounded"></element>
+                    <element name="oprSpec" type="tns:OprSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="daoSpec" type="tns:DaoSpec" minOccurs="0" maxOccurs="unbounded"></element>
+					<element name="svcMethodSpec" type="tns:MgrMethodSpec" minOccurs="0" maxOccurs="unbounded"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="CaseFilterSpec">
+		<sequence>
+			<element name="resultFilter" type="tns:ResultFilterSpec" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+		<attribute name="test" type="string"></attribute>
+	</complexType>
+
+	<complexType name="MgrMethodSpec">
+		<complexContent>
+			<extension base="tns:MethodSpec"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="CtrlrSpec">
+		<sequence>
+			<element name="mgrSpec" type="tns:MgrSpec" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+</schema>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="分类系统" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.community.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="CM.CAT_SYS" desc="${cnName}管理">
+						
+						<daoSpec shortName="HIVE.CM_CAT_SYS" desc="查询公共分类编码" />
+						<daoSpec shortName="HIVE.CM_PTY_CAT_SYS" desc="查询参与方分类编码" />
+						
+						<svcMethodSpec verb="find" subject="CmCatSysListByMethCd" tableName="HIVE.CM_CAT_SYS" returnDataType="list" expCode="810005" desc="根据分类方法查询分类编码" />
+						<svcMethodSpec verb="find" subject="AllCmCatSysList" tableName="HIVE.CM_CAT_SYS" returnDataType="list" expCode="810006" desc="根据父编码查询分类编码" />
+						<svcMethodSpec verb="find" subject="CmCatSysListByPrntCd" tableName="HIVE.CM_CAT_SYS" returnDataType="list" expCode="810006" desc="根据父编码查询分类编码" />
+						<svcMethodSpec verb="find" subject="PtyCatSysListByMethCd" tableName="HIVE.CM_PTY_CAT_SYS" returnDataType="list" expCode="810010" desc="根据登录帐号所属公司（总部）和分类方法查询分类编码" />
+						<svcMethodSpec verb="find" subject="PtyCatSysListByPrntCd" tableName="HIVE.CM_PTY_CAT_SYS" returnDataType="list" expCode="810011" desc="根据登录帐号所属公司（总部）和父编码查询分类编码" />
+							
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

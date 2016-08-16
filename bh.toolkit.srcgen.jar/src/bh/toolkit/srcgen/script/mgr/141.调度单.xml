@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="调度单" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.argmt.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+
+					<mgrSpec shortName="AR.DSPCH_ORD" desc="${cnName}管理">
+
+						<oprSpec shortName="HIVE.AR_DSPCH_ORD" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.AR_DSPCH_ORD" desc="查询${cnName}" />
+						<daoSpec shortName="HIVE.AR_ARGMT" desc="提交调度单" />
+						<svcMethodSpec verb="new" subject="DspchOrd" tableName="HIVE.AR_DSPCH_ORD" returnDataType="int" expCode="230100" desc="新建调度单" />
+						<svcMethodSpec verb="new" subject="DspchDilvOrdRel" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230100" desc="新建调度单与送货单之间的关系" />
+						<!-- <svcMethodSpec verb="find" subject="DspchOrdList" tableName="HIVE.AR_DSPCH_ORD" returnDataType="java.util.List" expCode="230101" desc="查询调度单列表" /> -->
+						<svcMethodSpec verb="find" subject="DspchDilvOrdRelList" tableName="HIVE.AR_ARGMT_REL" returnDataType="java.util.List" expCode="230102" desc="查询调度单与送货单之间的关系列表" />
+						<svcMethodSpec verb="count" subject="DspchDilvOrdRelList" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230103" desc="计算调度单与送货单之间的关系列表总数" />
+						<svcMethodSpec verb="count" subject="DspchOrdList" tableName="HIVE.AR_DSPCH_ORD" returnDataType="int" expCode="230104" desc="计算调度单列表总数" />
+						<svcMethodSpec verb="find" subject="DspchOrdDetail" tableName="HIVE.AR_DSPCH_ORD" paramDataType="java.lang.Long" returnDataType="dtox" expCode="230105" desc="查询调度单详情" />
+						<svcMethodSpec verb="assign" subject="DspchDilvOrdRel" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230106" desc="排调度单" />
+						<svcMethodSpec verb="change" subject="DspchOrd" tableName="HIVE.AR_DSPCH_ORD" returnDataType="int" expCode="230107" desc="根据ID修改调度单" />
+						<svcMethodSpec verb="change" subject="DspchDilvOrdRel" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230108" desc="根据ID修改调度单与送货单之间的关系" />
+
+						<svcMethodSpec verb="remove" subject="OneDspchOrd" tableName="HIVE.AR_ARGMT" returnDataType="int" expCode="230130" desc="移除单条调度单" />
+						<svcMethodSpec verb="remove" subject="MultiDspchOrd" tableName="HIVE.AR_ARGMT" returnDataType="int" expCode="230131" desc="移除多条调度单" />
+
+						<svcMethodSpec verb="remove" subject="OneDspchOrDilvOrdReld" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230132" desc="移除单条调度单与送货单之间的关系" />
+						<svcMethodSpec verb="remove" subject="MultiDilvOrdRel" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230133" desc="移除多条调度单与送货单之间的关系" />
+
+					</mgrSpec>
+				</trxSpec>
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

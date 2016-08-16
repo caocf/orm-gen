@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="出库单" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.argmt.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="AR.OUT_STOCK_NOTE" desc="${cnName}管理">
+
+						<daoSpec shortName="HIVE.AR_OUT_STOCK_NOTE" desc="查询${cnName}" />
+						<daoSpec shortName="HIVE.AR_OUT_STOCK_NOTE_ITM" desc="查询出库单明细" />
+						<daoSpec shortName="HIVE.IV_INVEN_ARGMT_ITM_REL" desc="库存与合约项间关系" />
+						<daoSpec shortName="HIVE.AR_ARGMT" desc="提交出库单" />
+						<daoSpec shortName="HIVE.IV_INVEN" desc="库存" />
+						
+						<oprSpec shortName="HIVE.AR_OUT_STOCK_NOTE" desc="新增、修改、删除${cnName}" />
+						<oprSpec shortName="HIVE.AR_OUT_STOCK_NOTE_ITM" desc="新增、修改、删除出库单明细" />
+						<oprSpec shortName="HIVE.IV_INVEN" desc="更新库存" />
+						
+						<mgrSpec shortName="IV.INVEN" desc="更新库存" />
+
+						<svcMethodSpec verb="new" subject="OutStockNote" tableName="HIVE.AR_OUT_STOCK_NOTE" returnDataType="int" expCode="210200" desc="新建出库单" />
+						<svcMethodSpec verb="find" subject="OutStockNoteList" tableName="HIVE.AR_OUT_STOCK_NOTE" returnDataType="java.util.List" expCode="210202" desc="查询出库单列表" />
+						<svcMethodSpec verb="count" subject="OutStockNoteList" tableName="HIVE.AR_OUT_STOCK_NOTE" returnDataType="int" expCode="210204" desc="计算出库单列表总数" />
+						<svcMethodSpec verb="find" subject="OutStockNoteDetail" tableName="HIVE.AR_OUT_STOCK_NOTE" paramDataType="java.lang.Long" returnDataType="dtox" expCode="210206" desc="查询出库单详情" />
+						<svcMethodSpec verb="find" subject="OutStockNoteItmFullList" tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" returnDataType="java.util.List" expCode="210208" desc="查询出库单明细列表-附带出库单" />
+						<svcMethodSpec verb="count" subject="OutStockNoteItmFullList" tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" returnDataType="int" expCode="210210" desc="计算出库单明细列表总数-附带出库单" />
+
+						<svcMethodSpec verb="add" subject="OutStockNoteItm" tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" returnDataType="int" expCode="210212" desc="增加出库单明细" />
+						<svcMethodSpec verb="find" subject="OutStockNoteItmList" tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" returnDataType="java.util.List" expCode="210214" desc="查询出库单明细列表" />
+						<svcMethodSpec verb="count" subject="OutStockNoteItmList" tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" returnDataType="int" expCode="210216" desc="计算出库单明细列表总数" />
+						<svcMethodSpec verb="find"
+						               subject="OutStockNoteItmDetail"
+						               tableName="HIVE.AR_OUT_STOCK_NOTE_ITM"
+						               paramDataType="java.lang.Long"
+						               returnDataType="dtox"
+						               expCode="210205"
+						               desc="查询出库单明细详情" />
+							
+						<svcMethodSpec verb="confirm" subject="OutStockNote" tableName="HIVE.AR_OUT_STOCK_NOTE" returnDataType="int" expCode="210215" desc="确认出库单" />
+
+						<svcMethodSpec verb="change" subject="OutStockNote" tableName="HIVE.AR_OUT_STOCK_NOTE" returnDataType="int" expCode="210218" desc="根据ID修改出库单" />
+						<svcMethodSpec verb="remove" subject="OneOutStockNote" tableName="HIVE.AR_ARGMT" returnDataType="int" expCode="210220" desc="移除单条出库单" />
+						<svcMethodSpec verb="remove" subject="MultiOutStockNote" tableName="HIVE.AR_ARGMT" returnDataType="int" expCode="210222" desc="移除多条出库单" />
+
+						<svcMethodSpec verb="change" subject="OutStockNoteItm" tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" returnDataType="int" expCode="210224" desc="修改出库单明细" />
+						<svcMethodSpec verb="remove" subject="OneOutStockNoteItm" tableName="HIVE.AR_ARGMT_ITM" returnDataType="int" expCode="210226" desc="移除单条出库单明细" />
+						<svcMethodSpec verb="remove" subject="MultiOutStockNoteItm" tableName="HIVE.AR_ARGMT_ITM" returnDataType="int" expCode="210228" desc="移除多条出库单明细" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

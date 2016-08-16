@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="库存内部转移单" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.argmt.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="AR.INVEN_INTNL_TRANSF_REQT" desc="${cnName}管理">
+
+						<daoSpec shortName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" desc="查询${cnName}" />
+						<oprSpec shortName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" desc="新增、修改、删除${cnName}" />
+
+						<svcMethodSpec verb="add" subject="InvenIntnlTransfReqt" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" returnDataType="int" expCode="210294" desc="增加库存内部转移单" />
+						<svcMethodSpec verb="change" subject="InvenIntnlTransfReqt" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" returnDataType="int" expCode="210296" desc="修改库存内部转移单" />
+						<svcMethodSpec verb="remove" subject="InvenIntnlTransfReqt" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" returnDataType="int" expCode="210298" desc="移除库存内部转移单" />
+						<svcMethodSpec verb="find" subject="InvenIntnlTransfReqtList" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" returnDataType="java.util.List" expCode="210300" desc="查看库存内部转移单列表" />
+						<svcMethodSpec verb="count" subject="InvenIntnlTransfReqtList" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" returnDataType="int" expCode="210302" desc="查看库存内部转移单列表" />
+						<svcMethodSpec verb="find" subject="InvenIntnlTransfReqtDetail" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" returnDataType="dtox" expCode="210304" desc="查看库存内部转移单详细信息" />
+						<svcMethodSpec verb="find" subject="InvenIntnlTransfReqtItmList" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT_ITM" returnDataType="list" expCode="210306" desc="查看库存内部转移单明细列表" />
+						<svcMethodSpec verb="find" subject="InvenIntnlTransfReqtItmDetail" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT_ITM" returnDataType="dtox" expCode="210308" desc="查看库存内部转移单明细详细信息" />
+						<svcMethodSpec verb="add" subject="InvenIntnlTransfReqtItm" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT_ITM" returnDataType="int" expCode="210310" desc="增加库存内部转移单明细" />
+						<svcMethodSpec verb="change" subject="InvenIntnlTransfReqtItm" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT_ITM" returnDataType="int" expCode="210312" desc="修改库存内部转移单明细" />
+						<svcMethodSpec verb="remove" subject="InvenIntnlTransfReqtItm" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT_ITM" returnDataType="int" expCode="210314" desc="移除库存内部转移单明细" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

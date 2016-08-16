@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方与商品" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.goods.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="GD.PTY_GOODS" desc="${cnName}管理">
+
+						<oprSpec shortName="HIVE.GD_PTY_GOODS" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.GD_PTY_GOODS" desc="查询${cnName}" />
+
+						<svcMethodSpec verb="new" subject="PtyGoods" tableName="HIVE.GD_PTY_GOODS" returnDataType="int" expCode="170095" desc="新增参与方商品" />
+						<svcMethodSpec verb="find" subject="PtyGoodsList" tableName="HIVE.GD_PTY_GOODS" returnDataType="java.util.List" expCode="170100" desc="查询授权访问的参与方商品列表" />
+						<svcMethodSpec verb="count" subject="PtyGoodsList" tableName="HIVE.GD_PTY_GOODS" returnDataType="int" expCode="170102" desc="计算授权访问的参与方商品列表总数" />
+						<svcMethodSpec verb="find" subject="PtyGoodsDetail" tableName="HIVE.GD_PTY_GOODS" paramDataType="java.lang.Long" returnDataType="dtox" expCode="170104" desc="查询参与方商品详情" />
+						<svcMethodSpec verb="change" subject="PtyGoods" tableName="HIVE.GD_PTY_GOODS" returnDataType="int" expCode="170106" desc="修改参与方商品" />
+						<svcMethodSpec verb="remove" subject="PtyGoods" tableName="HIVE.GD_PTY_GOODS" returnDataType="int" expCode="170108" desc="移除参与方商品" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="信息列" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.community.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="RC.INFO_COL" desc="${cnName}管理">
+						
+						<daoSpec shortName="HIVE.RC_INFO_COL" desc="查询${cnName}" />
+						
+						<svcMethodSpec verb="find" subject="InfoColList" tableName="HIVE.RC_INFO_COL" returnDataType="java.util.List" expCode="810016" desc="查询信息列列表" />
+						
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

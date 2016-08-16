@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="合约" />
+	<property name="rootTableName" value="HIVE.AR_ARGMT" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<daoSpec shortName="HIVE.AR_OUT_STOCK_NOTE" desc="出库单">
+					<selectSpec subject="OutStockNote" tableName="HIVE.AR_OUT_STOCK_NOTE" defaultOrderBy="updTm" desc="出库单">
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_PTY_LOC_LINK">
+							</selectSpec>
+						</oneToOne>
+						<oneToMany listOfSon="outStockNoteItmList" fatherAttr="id" sonAttr="argmtId">
+							<selectSpec tableName="HIVE.AR_ARGMT_ITM">
+								<oneToOne fatherAttr="id" sonAttr="id">
+									<selectSpec tableName="HIVE.AR_OUT_STOCK_NOTE_ITM">
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToMany>
+					</selectSpec>
+				</daoSpec>
+
+				<daoSpec shortName="HIVE.AR_OUT_STOCK_NOTE_ITM" desc="出库单明细">
+					<selectSpec subject="OutStockNoteItm" tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" defaultOrderBy="updTm" desc="出库单明细">
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_ITM">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<oneToOne fatherAttr="id" sonAttr="id">
+									<selectSpec tableName="HIVE.AR_ARGMT_ITM_LINK" desc="相关合约项链接">
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+					<selectSpec subject="OutStockNoteItmFull" tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" defaultOrderBy="updTm" desc="出库单明细-附带出库单">
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_ITM">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<oneToOne fatherAttr="id" sonAttr="id">
+									<selectSpec tableName="HIVE.AR_ARGMT_ITM_LINK" desc="相关合约项链接">
+									</selectSpec>
+								</oneToOne>
+								<oneToOne fatherAttr="argmtId" sonAttr="id">
+									<selectSpec tableName="HIVE.AR_ARGMT">
+										<oneToOne fatherAttr="id" sonAttr="id">
+											<selectSpec tableName="HIVE.AR_OUT_STOCK_NOTE">
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+					<selectSpec subject="RelatedInven" tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" defaultOrderBy="updTm" desc="出库单明细与库存关系">
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_ITM">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<oneToOne fatherAttr="id" sonAttr="argmtItmId">
+									<selectSpec tableName="HIVE.IV_INVEN_ARGMT_ITM_REL" desc="库存与合约项间关系">
+										<oneToOne fatherAttr="invenId" sonAttr="id">
+											<selectSpec tableName="HIVE.IV_INVEN">
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+				</daoSpec>
+
+				<!-- OPR接口说明 ，oprSpec的shortName决定了OPR接口的名称-->
+				<oprSpec shortName="HIVE.AR_OUT_STOCK_NOTE" desc="出库单数据操作">
+
+					<!-- 新增出库单 -->
+					<addSpec subject="OutStockNote" tableName="HIVE.AR_OUT_STOCK_NOTE" desc="出库单及状态">
+						<insertSpec tableName="HIVE.AR_ARGMT"
+						            desc="合约"
+						            insertExpr="catCd=CmCatSysCode.ArgmtOutStockNote; statCd=CmCatSysCode.ArgmtStatOutStockNoteNew; editFlag=CmCatSysCode.RevisionNew.cd()"
+						            updateExpr="editFlag=CmCatSysCode.RevisionUpdated.cd()">
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.AR_OUT_STOCK_NOTE" desc="出库单">
+								</insertSpec>
+							</oneToOne>
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.AR_ARGMT_PTY_LOC_LINK" desc="合约所涉及的参与方">
+								</insertSpec>
+							</oneToOne>
+							<oneToOne fatherAttr="id" sonAttr="argmtId">
+								<insertSpec tableName="HIVE.AR_ARGMT_LOC" desc="合约与位置" insertExpr="catCd=CmCatSysCode.PtyAndLocConsignorAddr">
+								</insertSpec>
+							</oneToOne>
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.AR_ARGMT_LINK" desc="相关合约链接">
+								</insertSpec>
+							</oneToOne>
+							<oneToOne fatherAttr="id" sonAttr="argmtId">
+								<insertSpec tableName="HIVE.AR_ARGMT_STAT" desc="合约状态" insertExpr="statCd=CmCatSysCode.ArgmtStatOutStockNoteSubmitted">
+								</insertSpec>
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+
+					<removeSpec subject="OutStockNote" tableName="HIVE.AR_ARGMT" desc="移除出库单">
+					</removeSpec>
+
+				</oprSpec>
+
+				<oprSpec shortName="HIVE.AR_OUT_STOCK_NOTE_ITM" desc="出库单明细数据操作">
+
+					<!-- 新增出库单明细 -->
+					<addSpec subject="OutStockNoteItm" tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" desc="单条出库单明细">
+						<insertSpec tableName="HIVE.AR_ARGMT" desc="合约" insertExpr="catCd=CmCatSysCode.ArgmtOutStockNote" skipVerb="insert">
+							<oneToOne fatherAttr="id" sonAttr="argmtId">
+								<insertSpec tableName="HIVE.AR_ARGMT_ITM" desc="合约明细" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+									<oneToOne fatherAttr="id" sonAttr="id">
+										<insertSpec tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" desc="出库单明细" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+										</insertSpec>
+									</oneToOne>
+									<oneToOne fatherAttr="id" sonAttr="id">
+										<insertSpec tableName="HIVE.AR_ARGMT_ITM_LINK" desc="相关合约项链接" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+										</insertSpec>
+									</oneToOne>
+									<!-- 入库单采用manyToMany，数据关系实则一对一，这里与入库不同，采用oneToMany，考虑到一条出库单项可能对应到多条库存 -->
+									<oneToMany fatherAttr="id" sonAttr="argmtItmId">
+										<insertSpec tableName="HIVE.IV_INVEN_ARGMT_ITM_REL" desc="库存与合约项间的关系" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+											<oneToOne fatherAttr="invenId" sonAttr="id">
+												<!-- 跳过insert，不增加库存记录 -->
+												<insertSpec tableName="HIVE.IV_INVEN" desc="库存" insertExpr="statCd=CmCatSysCode.InvenStatNew" skipVerb="insert">
+													<oneToOne fatherAttr="id" sonAttr="invenId">
+														<insertSpec tableName="HIVE.IV_INVEN_CHG" desc="库存变化" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+															<oneToOne fatherAttr="id" sonAttr="id">
+																<insertSpec tableName="HIVE.IV_INVEN_CHG_ARGMT_LINK" desc="库存变化与合约链接" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+																</insertSpec>
+															</oneToOne>
+														</insertSpec>
+													</oneToOne>
+												</insertSpec>
+											</oneToOne>
+										</insertSpec>
+									</oneToMany>
+								</insertSpec>
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+
+					<!-- 新增相关库存 -->
+					<addSpec subject="RelatedInventory" tableName="HIVE.AR_OUT_STOCK_NOTE_ITM" desc="单条出库单明细">
+						<insertSpec tableName="HIVE.AR_ARGMT" desc="合约" insertExpr="catCd=CmCatSysCode.ArgmtOutStockNote" skipVerb="insert">
+							<oneToOne fatherAttr="id" sonAttr="argmtId">
+								<insertSpec tableName="HIVE.AR_ARGMT_ITM" desc="合约明细" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()" skipVerb="insert">
+									<!-- 入库单采用manyToMany，数据关系实则一对一，这里与入库不同，采用oneToMany，考虑到一条出库单项可能对应到多条库存 -->
+									<oneToMany fatherAttr="id" sonAttr="argmtItmId">
+										<insertSpec tableName="HIVE.IV_INVEN_ARGMT_ITM_REL" desc="库存与合约项间的关系" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+											<oneToOne fatherAttr="invenId" sonAttr="id">
+												<!-- 跳过insert，不增加库存记录 -->
+												<insertSpec tableName="HIVE.IV_INVEN" desc="库存" insertExpr="statCd=CmCatSysCode.InvenStatNew" skipVerb="insert">
+													<oneToOne fatherAttr="id" sonAttr="invenId">
+														<insertSpec tableName="HIVE.IV_INVEN_CHG" desc="库存变化" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+															<oneToOne fatherAttr="id" sonAttr="id">
+																<insertSpec tableName="HIVE.IV_INVEN_CHG_ARGMT_LINK" desc="库存变化与合约链接" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+																</insertSpec>
+															</oneToOne>
+														</insertSpec>
+													</oneToOne>
+												</insertSpec>
+											</oneToOne>
+										</insertSpec>
+									</oneToMany>
+								</insertSpec>
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+
+					<removeSpec subject="OutStockNoteItm" tableName="HIVE.AR_ARGMT_ITM" desc="移除出库单项">
+					</removeSpec>
+
+				</oprSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

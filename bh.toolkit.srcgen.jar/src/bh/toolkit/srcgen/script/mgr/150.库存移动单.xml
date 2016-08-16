@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="库存移动单" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.argmt.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="AR.INVEN_MOVE_REQT" desc="${cnName}管理">
+
+						<daoSpec shortName="HIVE.AR_INVEN_MOVE_REQT" desc="查询${cnName}" />
+						<oprSpec shortName="HIVE.AR_INVEN_MOVE_REQT" desc="新增、修改、删除${cnName}" />
+
+						<svcMethodSpec verb="find" subject="InvenMoveReqtList" tableName="HIVE.AR_INVEN_MOVE_REQT" returnDataType="java.util.List" expCode="210250" desc="查看库存移动申请单列表" />
+						<svcMethodSpec verb="count" subject="InvenMoveReqtList" tableName="HIVE.AR_INVEN_MOVE_REQT" returnDataType="int" expCode="210252" desc="查看库存移动申请单列表" />
+						<svcMethodSpec verb="find" subject="InvenMoveReqtDetail" tableName="HIVE.AR_INVEN_MOVE_REQT" returnDataType="dtox" expCode="210254" desc="查看库存移动申请单详细信息" />
+						<svcMethodSpec verb="find" subject="InvenMoveReqtItmList" tableName="HIVE.AR_INVEN_MOVE_REQT_ITM" returnDataType="list" expCode="210256" desc="查看库存移动申请单明细列表" />
+						<svcMethodSpec verb="add" subject="InvenMoveReqtItm" tableName="HIVE.AR_INVEN_MOVE_REQT_ITM" returnDataType="int" expCode="210258" desc="增加库存移动申请单明细" />
+						<svcMethodSpec verb="change" subject="InvenMoveReqtItm" tableName="HIVE.AR_INVEN_MOVE_REQT_ITM" returnDataType="int" expCode="210260" desc="修改库存移动申请单明细" />
+						<svcMethodSpec verb="remove" subject="InvenMoveReqtItm" tableName="HIVE.AR_INVEN_MOVE_REQT_ITM" returnDataType="int" expCode="210262" desc="移除库存移动申请单明细" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

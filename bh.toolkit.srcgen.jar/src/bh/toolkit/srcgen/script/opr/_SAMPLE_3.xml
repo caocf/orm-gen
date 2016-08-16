@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="组织" />
+	<property name="rootTableName" value="HIVE.IP_ORG" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- DAO接口说明，shortName决定了DAO的名称 -->
+				<daoSpec shortName="${rootTableName}" desc="${cnName}">
+					
+					<selectSpec subject="CustomerInfo" tableName="${rootTableName}" tableAlias="L_PTY" defaultOrderBy="updTm" desc="查询客户资料">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.IP_PTY">
+								<oneToOne fatherAttr="id" sonAttr="leftId" joinType="inner">
+									<selectSpec tableName="HIVE.IP_PTY_REL" tableAlias="PTY_REL">
+										<resultFilter attribute="catCd" comparator="=" value="'1215.151'" />
+										<oneToOne refToSon="superior" fatherAttr="rightId" sonAttr="id" joinType="inner">
+											<selectSpec tableName="HIVE.IP_PTY" tableAlias="R_PTY">
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+
+				</daoSpec>
+
+				<!-- OPR接口说明 ，oprSpec的shortName决定了OPR接口的名称-->
+				<oprSpec shortName="${rootTableName}" desc="访问PTY的OPR">
+					
+					<!-- addSpec的subject（如果有）决定了new方法和append方法的名称，tableName决定了方法入参DTOX的名字 -->
+					<addSpec subject="CustomerInfo" tableName="${rootTableName}" desc="新增客户资料">
+						
+						<!-- insertSpec的tableName决定了需要引用的DAO，VO的值由addSpec提供的DTOX中获取 -->
+						<insertSpec tableName="${rootTableName}" desc="插入参与方" enableSelectKey="true" insertExpr="editFlag=CatSysCode.RevisionNew.cd()">
+							<manyToMany refToRel="ptyRel" refToRight="superior" fatherAttr="id" leftAttr="leftId" rightAttr="rightId" sonAttr="id">
+								<insertSpec tableName="HIVE.IP_PTY_REL"
+								            desc="插入参与方与上级关系"
+								            insertExpr="catCd=CatSysCode.PtyAndPtyRightMangaeLeft; editFlag=CatSysCode.RevisionNew.cd()" />
+								<insertSpec tableName="HIVE.IP_PTY" desc="插入上级" insertExpr="editFlag=CatSysCode.RevisionNew.cd()">
+									<manyToMany refToRel="superiorAndLoc"
+									            refToRight="superiorAddr"
+									            fatherAttr="id"
+									            leftAttr="leftId"
+									            rightAttr="rightId"
+									            sonAttr="id">
+										<insertSpec tableName="HIVE.IP_PTY_LOC"
+										            desc="插入上级与地址关系"
+										            insertExpr="catCd=CatSysCode.PtyAndLocContactAddr; editFlag=CatSysCode.RevisionNew.cd()" />
+										<insertSpec tableName="HIVE.LC_LOC" desc="插入上级地址" insertExpr="editFlag=CatSysCode.RevisionNew.cd()" />
+									</manyToMany>
+								</insertSpec>
+							</manyToMany>
+							<manyToMany refToRel="ptyAndLoc" refToRight="ptyAddr" fatherAttr="id" sonAttr="id" leftAttr="leftId" rightAttr="rightId">
+								<insertSpec tableName="HIVE.IP_PTY_LOC"
+								            desc="插入参与方与地址关系"
+								            insertExpr="catCd=CatSysCode.PtyAndLocContactAddr; editFlag=CatSysCode.RevisionNew.cd()" />
+								<insertSpec tableName="HIVE.LC_LOC" desc="插入地址" insertExpr="editFlag=CatSysCode.RevisionNew.cd()" />
+							</manyToMany>
+						</insertSpec>
+					</addSpec>
+					<changeSpec tableName="${rootTableName}" desc="更改${cnName}">
+					</changeSpec>
+					<removeSpec tableName="${rootTableName}" desc="删除${cnName}">
+					</removeSpec>
+				</oprSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

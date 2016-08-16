@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="配送需求(订单)" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.argmt.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="AR.DELIV_REQT" desc="${cnName}管理">
+						<oprSpec shortName="HIVE.AR_DELIV_REQT" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.AR_DELIV_REQT" desc="查询${cnName}" />
+						<daoSpec shortName="HIVE.AR_ARGMT" desc="提交配送需求(订单)" />						
+						<svcMethodSpec verb="new" subject="DelivReqt" tableName="HIVE.AR_DELIV_REQT" returnDataType="int" expCode="230200" desc="新建配送需求(订单)" />
+						<svcMethodSpec verb="find" subject="DelivReqtList" tableName="HIVE.AR_DELIV_REQT" returnDataType="java.util.List" expCode="230201" desc="查询配送需求(订单)列表" />
+						<svcMethodSpec verb="count" subject="DelivReqtList" tableName="HIVE.AR_DELIV_REQT" returnDataType="int" expCode="230202" desc="计算配送需求(订单)列表总数" />
+						<svcMethodSpec verb="find" subject="DelivReqtDetail" tableName="HIVE.AR_DELIV_REQT" paramDataType="java.lang.Long" returnDataType="dtox" expCode="230203" desc="查询配送需求(订单)详情" />											
+						<svcMethodSpec verb="confirm" subject="DelivReqt" tableName="HIVE.AR_DELIV_REQT" returnDataType="int" expCode="230204" desc="确认配送需求(订单)" />
+						<svcMethodSpec verb="change" subject="DelivReqt" tableName="HIVE.AR_DELIV_REQT" returnDataType="int" expCode="230205" desc="根据ID修改配送需求(订单)" />
+						<svcMethodSpec verb="remove" subject="OneDelivReqt" tableName="HIVE.AR_ARGMT" returnDataType="int" expCode="230206" desc="移除单条配送需求(订单)" />
+						<svcMethodSpec verb="remove" subject="MultiDelivReqt" tableName="HIVE.AR_ARGMT" returnDataType="int" expCode="230207" desc="移除多条配送需求(订单)" />						
+						
+									
+						<svcMethodSpec verb="find" subject="AuthorDelivReqt" tableName="HIVE.AR_DELIV_REQT"  returnDataType="java.util.List" expCode="230208" desc="查询授权的配送需求(订单)详情" />											
+						<svcMethodSpec verb="count" subject="AuthorDelivReqt" tableName="HIVE.AR_DELIV_REQT" returnDataType="int" expCode="230209" desc="计算配送需求(订单)列表总数" />
+
+						<svcMethodSpec verb="find" subject="AuthorDelivOrd" tableName="HIVE.AR_DELIV_REQT"  returnDataType="java.util.List" expCode="230210" desc="查询授权的订单" />											
+						<svcMethodSpec verb="count" subject="AuthorDelivOrd" tableName="HIVE.AR_DELIV_REQT" returnDataType="int" expCode="230211" desc="计算订单总数" />
+					
+						<svcMethodSpec verb="cal" subject="AuthorDelivReqSum" tableName="HIVE.AR_DELIV_REQT" returnDataType="dtox" expCode="230215" desc="计算配送需求汇总信息" />
+						
+						<svcMethodSpec verb="count" subject="AbnormalReqt" tableName="HIVE.AR_ARGMT" returnDataType="int" expCode="230212" desc="异常状态的配送需求(订单)总数" />
+
+						<svcMethodSpec verb="find" subject="DelivReqtItms" tableName="HIVE.AR_ARGMT_ITM"  returnDataType="java.util.List" expCode="230213" desc="查询订单明细" />											
+						<svcMethodSpec verb="count" subject="DelivReqtItms" tableName="HIVE.AR_ARGMT_ITM" returnDataType="int" expCode="230214" desc="计算订单明细总数" />
+
+						<!-- 查询没有标准地址的订单 -->
+						<svcMethodSpec verb="find" subject="OrderWithoutStandardAddr" tableName="HIVE.AR_DELIV_REQT"  returnDataType="java.util.List" expCode="230215" desc="查询没有标准地址的订单" />											
+
+						<!-- 查询订单位置 -->
+						<svcMethodSpec verb="find" subject="DrvrWithOrdLoc" tableName="HIVE.AR_DELIV_REQT"  returnDataType="java.util.List" expCode="230216" desc="查询订单位置" />											
+
+						
+						<svcMethodSpec verb="find" subject="AuthorDelivOrdForDDK" tableName="HIVE.AR_DELIV_REQT"  returnDataType="java.util.List" expCode="230210" desc="查询授权的订单" />											
+						<svcMethodSpec verb="count" subject="AuthorDelivOrdForDDK" tableName="HIVE.AR_DELIV_REQT" returnDataType="int" expCode="230211" desc="计算订单总数" />
+
+
+					</mgrSpec>
+				</trxSpec>
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

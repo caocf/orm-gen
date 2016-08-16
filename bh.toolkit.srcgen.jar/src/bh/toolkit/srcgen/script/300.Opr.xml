@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="allTasks" default="allTasks">
+
+	<!-- Global attributes -->
+	<property file="105.InitCtx.properties" />
+
+	<!-- Initiate the global varialbles -->
+	<target name="initCtx">
+
+		<echo message="Run the target 'initCtx'..." />
+
+		<!-- 由于在Eclipse环境中启动Ant时指定了classpath，所以在此不需要配置：<path id="dependencyFinder" />，
+		也不需要在<taskdef/>中定义：<classpath refid="dependencyFinder" /> -->
+		<taskdef name="initCtx" classname="bh.toolkit.srcgen.task.InitCtx" />
+
+		<initCtx>
+			<artifactSpec>
+				<!-- 全局配置项 -->
+				<commonAttrSpec>
+					<!-- 数据源属性，当需要访问多个DB Schema时，用半角逗号分隔，放在第一位的为默认Schema。 -->
+					<datasourceSpec dbType="${datasource.dbType}" driver="${datasource.driver}" connUrl="${datasource.connUrl}" user="${datasource.user}" password="${datasource.password}" schema="${datasource.schema}" />
+					<!-- 工作产出共享参数 -->
+					<workspaceSpec ideWorkspace="${workspace.ideWorkspace}" commonPrj="${workspace.commonPrj}" transObjPrj="${workspace.transObjPrj}" ormPrj="${workspace.ormPrj}" compDescPrj="${workspace.compDescPrj}" mgrPrj="com.cbc.svc.party.jar" srcPathName="${workspace.srcPathName}" rsrcPathName="${workspace.rsrcPathName}" pkgPrefix="${workspace.pkgPrefix}" msgCdPkgName="${workspace.msgCdPkgName}" msgPropPkgName="${workspace.msgPropPkgName}" voPkgName="${workspace.voPkgName}" dtoPkgName="${workspace.dtoPkgName}" mapperPkgName="${workspace.mapperPkgName}" daoPkgName="${workspace.daoPkgName}" oprPkgName="${workspace.oprPkgName}" mgrPkgName="${workspace.mgrPkgName}" ctrlrPkgName="{workspace.ctrlrPkgName}" />
+				</commonAttrSpec>
+			</artifactSpec>
+		</initCtx>
+	</target>
+
+	<target name="allTasks" depends="initCtx">
+
+		<ant antfile="opr/100.分类系统.xml" inheritRefs="true" />
+		<ant antfile="opr/100.系统参数.xml" inheritRefs="true" />
+		<ant antfile="opr/103.参与方.xml" inheritRefs="true" />
+		<ant antfile="opr/105.企业.xml" inheritRefs="true" />
+		<ant antfile="opr/106.参与方帐号.xml" inheritRefs="true" />
+		<ant antfile="opr/110.位置.xml" inheritRefs="true" />
+		<ant antfile="opr/115.参与方与位置.xml" inheritRefs="true" />
+		<ant antfile="opr/120.参与方与商品.xml" inheritRefs="true" />
+		<ant antfile="opr/125.货架.xml" inheritRefs="true" />
+		<ant antfile="opr/126.车辆.xml" inheritRefs="true" />
+		<ant antfile="opr/130.货位.xml" inheritRefs="true" />
+		<ant antfile="opr/140.合约项.xml" inheritRefs="true" />
+		<ant antfile="opr/150.入库单.xml" inheritRefs="true" />
+		<ant antfile="opr/160.出库单.xml" inheritRefs="true" />
+		<ant antfile="opr/160.送货单.xml" inheritRefs="true" />
+		<ant antfile="opr/161.调度单.xml" inheritRefs="true" />
+		<ant antfile="opr/161.调度单与送货单关系.xml" inheritRefs="true" />
+		<ant antfile="opr/162.配送需求.xml" inheritRefs="true" />
+		<ant antfile="opr/170.库存移动单.xml" inheritRefs="true" />
+		<ant antfile="opr/175.库存调整单.xml" inheritRefs="true" />
+		<ant antfile="opr/180.库存内部转移单.xml" inheritRefs="true" />
+		<ant antfile="opr/200.库存.xml" inheritRefs="true" />
+		<ant antfile="opr/205.库存变更.xml" inheritRefs="true" />
+		<ant antfile="opr/270.线路.xml" inheritRefs="true" />
+		<ant antfile="opr/270.线路排单.xml" inheritRefs="true" />
+		<ant antfile="opr/305.菜单项.xml" inheritRefs="true" />
+		<ant antfile="opr/307.信息列.xml" inheritRefs="true" />
+		<ant antfile="opr/410.角色.xml" inheritRefs="true" />
+		<ant antfile="opr/415.授权.xml" inheritRefs="true" />
+		<ant antfile="opr/430.集成.xml" inheritRefs="true" />
+		<ant antfile="opr/440.资源.xml" inheritRefs="true" />
+
+		<ant antfile="900.printArtifacts.xml" inheritRefs="true" />
+
+	</target>
+
+</project>

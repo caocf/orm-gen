@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.party.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="IP.PTY" desc="${cnName}管理">
+
+						<daoSpec shortName="HIVE.IP_PTY" desc="查询${cnName}" />
+
+						<svcMethodSpec verb="find" subject="PtyList" tableName="HIVE.IP_PTY" returnDataType="java.util.List" expCode="810020" desc="查询资源列表" />
+						<svcMethodSpec verb="count" subject="PtyList" tableName="HIVE.IP_PTY" returnDataType="int" expCode="111100" desc="计算资源的总数" />
+						<svcMethodSpec verb="new" subject="Pty" tableName="HIVE.IP_PTY" returnDataType="int" expCode="111110" desc="新增资源" />
+						<svcMethodSpec verb="change" subject="Pty" tableName="HIVE.IP_PTY" returnDataType="int" expCode="111111" desc="修改资源" />
+						<svcMethodSpec verb="remove" subject="Pty" tableName="HIVE.IP_PTY" returnDataType="int" expCode="111150" desc="移除资源" />
+						<svcMethodSpec verb="find" subject="PtyDetail" tableName="HIVE.IP_PTY" paramDataType="java.lang.String" returnDataType="dtox" expCode="111103" desc="查询资源" />
+
+						<!--
+						<svcMethodSpec verb="find" subject="CorpList" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="100101" desc="查询授权访问的企业信息" />
+						<svcMethodSpec verb="count" subject="CorpList" tableName="HIVE.IP_ORG" returnDataType="int" expCode="100102" desc="计算授权访问的企业总数" />
+						<svcMethodSpec verb="new" subject="CorpBasic" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110001" desc="新增企业基本信息" />
+						<svcMethodSpec verb="new" subject="CorpComplete" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110002" desc="新增企业信息" />
+						<svcMethodSpec verb="find" subject="CorpInfoList" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="110003" desc="查询企业信息列表" />
+						<svcMethodSpec verb="count" subject="CorpInfoList" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110004" desc="计算企业列表总数" />
+						<svcMethodSpec verb="find" subject="CorpInfoSimple" tableName="HIVE.IP_ORG" paramDataType="java.lang.Long" returnDataType="dtox" expCode="110005" desc="查询企业简要信息" />
+						<svcMethodSpec verb="find" subject="CorpInfoDetail" tableName="HIVE.IP_ORG" paramDataType="java.lang.Long" returnDataType="dtox" expCode="110006" desc="查询企业完整信息" />
+						<svcMethodSpec verb="change" subject="CorpInfo" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110007" desc="修改企业信息" />
+
+						<svcMethodSpec verb="add" subject="SingleRelatedCorp" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110020" desc="增加单个关联企业" />
+						<svcMethodSpec verb="add" subject="MultiRelatedCorp" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110021" desc="增加多个关联企业" />
+						<svcMethodSpec verb="find" subject="RelatedCorpList" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="110022" desc="查询关联企业" />
+						<svcMethodSpec verb="add" subject="SingleRelatedLoc" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110023" desc="增加单个相关地址" />
+						<svcMethodSpec verb="add" subject="MultiRelatedLoc" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110024" desc="增加多个相关地址" />
+						<svcMethodSpec verb="find" subject="RelatedLocList" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="110025" desc="查询相关地址" />
+
+						<svcMethodSpec verb="remove" subject="CorpInfo" tableName="HIVE.IP_PTY" returnDataType="int" expCode="110050" desc="移除企业信息" />
+						<svcMethodSpec verb="remove" subject="CorpRel" tableName="HIVE.IP_PTY_REL" returnDataType="int" expCode="110051" desc="移除企业间关系" />
+						<svcMethodSpec verb="remove" subject="CorpLoc" tableName="HIVE.LC_PTY_LOC" returnDataType="int" expCode="110052" desc="移除企业与地址关系" />
+						-->
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

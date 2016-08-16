@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="送货单与调度单之间的关系" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.argmt.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="AR.ARGMT_REL" desc="${cnName}管理">
+						<oprSpec shortName="HIVE.AR_ARGMT_REL" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.AR_ARGMT_REL" desc="查询${cnName}" />
+						<daoSpec shortName="HIVE.AR_ARGMT_REL" desc="提交送货单与调度单之间的关系" />						
+						<svcMethodSpec verb="new" subject="ArgmtRel" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230100" desc="新建调度单" />
+						
+						<svcMethodSpec verb="find" subject="ArgmtRelList" tableName="HIVE.AR_ARGMT_REL" returnDataType="java.util.List" expCode="230101" desc="查询调度单与送货单之间的关系列表" />
+						<svcMethodSpec verb="count" subject="ArgmtRelList" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230102" desc="计算调度单与送货单之间的关系列表总数" />
+					
+						<svcMethodSpec verb="assign" subject="ArgmtRel" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230104" desc="排调度单" />
+						<svcMethodSpec verb="change" subject="ArgmtRel" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230105" desc="根据ID修改送货单与调度单之间的关系" />
+						
+						<svcMethodSpec verb="remove" subject="OneArgmtRel" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230106" desc="移除单条调度单与送货单之间的关系" />
+						<svcMethodSpec verb="remove" subject="MultiArgmtRel" tableName="HIVE.AR_ARGMT_REL" returnDataType="int" expCode="230107" desc="移除多条调度单与送货单之间的关系" />						
+							
+					</mgrSpec>
+				</trxSpec>
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

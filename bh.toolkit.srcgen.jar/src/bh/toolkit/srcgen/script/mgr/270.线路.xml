@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="线路活跃点" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.route.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="RT.PTY_RTE" desc="${cnName}管理">
+
+						<daoSpec shortName="HIVE.RT_PTY_RTE" desc="查询${cnName}" />
+						<daoSpec shortName="HIVE.RT_PTY_RTE" desc="查询参与方线路" />
+
+						<svcMethodSpec verb="find" subject="RtPtyRteList" tableName="HIVE.RT_PTY_RTE" returnDataType="java.util.List" expCode="271322" desc="查看线路活跃点列表" />
+						<svcMethodSpec verb="count" subject="RtPtyRteList" tableName="HIVE.RT_PTY_RTE" returnDataType="int" expCode="271324" desc="查询线路活跃点数量" />
+						<svcMethodSpec verb="find" subject="RtPtyRteDetail" tableName="HIVE.RT_PTY_RTE" returnDataType="dtox" expCode="271326" desc="查看线路活跃点明细" />
+						<svcMethodSpec verb="find" subject="RtAllPtyRteList" tableName="HIVE.RT_PTY_RTE" returnDataType="java.util.List" expCode="271322" desc="查询线路列表" />
+						<svcMethodSpec verb="count" subject="RtAllPtyRteList" tableName="HIVE.RT_PTY_RTE" returnDataType="java.util.List" expCode="271322" desc="查询线路数量" />
+
+					</mgrSpec>										
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

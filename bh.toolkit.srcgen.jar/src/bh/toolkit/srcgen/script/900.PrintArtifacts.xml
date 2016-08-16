@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方的商品" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="printArtifacts" classname="bh.toolkit.srcgen.task.PrintArtifacts" />
+
+		<printArtifacts>
+			<artifactSpec>
+			</artifactSpec>
+		</printArtifacts>
+
+	</target>
+
+</project>

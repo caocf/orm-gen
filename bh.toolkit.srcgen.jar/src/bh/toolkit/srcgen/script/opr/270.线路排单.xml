@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方的合约与线路及地点间关系" />
+	<property name="rootTableName" value="HIVE.RT_PTY_ARGMT_RTE_LOC" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+				<daoSpec shortName="HIVE.RT_PTY_ARGMT_RTE_LOC" desc="参与方的合约与线路及地点间关系">
+					<selectSpec subject="RtPtyArgmtRteLoc" tableName="HIVE.RT_PTY_ARGMT_RTE_LOC" defaultOrderBy="updTm" desc="派到线路上的订单">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<oneToOne fatherAttr="ptyId" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.IP_PTY" desc="参与方">								
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="argmtId" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT" desc="配送需求单">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<resultFilter begin="AND (" attribute="statCd" comparator="=" value="'2205.245.310.405'" />
+								<resultFilter begin="OR " end=")" attribute="statCd" comparator="=" value="'2205.245.310.410'" />
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="rteId" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.RT_RTE" desc="路线">
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="locId" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.LC_LOC" desc="配送的地址">
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="locId" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.LC_GEO_ADDR" desc="配送的地理位置信息">
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>				
+				</daoSpec>	
+				
+				<!-- OPR接口说明 ，oprSpec的shortName决定了OPR接口的名称-->
+				<oprSpec shortName="HIVE.RT_PTY_ARGMT_RTE_LOC" desc="${cnName}数据操作">
+					<!-- addSpec的subject（如果有）决定了new方法和append方法的名称，tableName决定了方法入参DTOX的名字 -->
+					<addSpec subject="PtyArgmtRteLoc" tableName="HIVE.RT_PTY_ARGMT_RTE_LOC" desc="参与方的合约与线路及地点间关系">
+						<insertSpec tableName="${rootTableName}"
+						            desc="${cnName}"
+				            		insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()"
+						            enableSelectKey="true">													
+						</insertSpec>
+					</addSpec>									
+					<removeSpec tableName="HIVE.RT_PTY_ARGMT_RTE_LOC" desc="删除参与方的合约与线路及地点间关系">
+					</removeSpec>										
+				</oprSpec>
+				
+			</artifactSpec>
+		</buildArtifacts>
+	</target>
+</project>

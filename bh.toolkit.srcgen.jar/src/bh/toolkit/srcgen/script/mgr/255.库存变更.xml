@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="库存变更" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.inventory.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="IV.INVEN_CHG" desc="${cnName}管理">
+
+						<oprSpec shortName="HIVE.IV_INVEN_CHG" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.IV_INVEN_CHG" desc="查询${cnName}" />
+
+						<svcMethodSpec verb="add" subject="InvenChg" tableName="HIVE.IV_INVEN_CHG" returnDataType="int" expCode="210320" desc="新增库存变更" />
+						<svcMethodSpec verb="find" subject="InvenChgList" tableName="HIVE.IV_INVEN_CHG" returnDataType="java.util.List" expCode="210322" desc="查看库存变更列表" />
+						<svcMethodSpec verb="count" subject="InvenChgList" tableName="HIVE.IV_INVEN_CHG" returnDataType="int" expCode="210324" desc="查看库存变更列表" />
+						<svcMethodSpec verb="find" subject="InvenChgDetail" tableName="HIVE.IV_INVEN_CHG" returnDataType="dtox" expCode="210326" desc="查看库存变更明细" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

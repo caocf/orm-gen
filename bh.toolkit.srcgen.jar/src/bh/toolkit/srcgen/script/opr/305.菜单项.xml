@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="菜单项" />
+	<property name="rootTableName" value="HIVE.RC_MENU_ITM" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- DAO接口说明，shortName决定了DAO的名称 -->
+				<daoSpec shortName="${rootTableName}" desc="${cnName}">
+
+					<!-- 逐次查询 授权访问的菜单项 -->
+					<selectSpec subject="AuthorMenuItmRoot" tableName="HIVE.RC_MENU_ITM" desc="逐次查询 授权访问的菜单项">
+						<includedAttr name="id" />
+						<includedAttr name="cd" />
+						<includedAttr name="nmCn" />
+						<includedAttr name="nmEn" />
+						<includedAttr name="url" />
+						<includedAttr name="catCd" />
+						<includedAttr name="catNmCn" />
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<oneToOne fatherAttr="id" sonAttr="id">
+							<selectSpec tableName="HIVE.RC_RSRC" defaultOrderBy="viewOrd">
+								<resultFilter attribute="catCd" comparator="=" value="'3100.205'" />
+								<resultFilter begin="AND" attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<resultFilter begin="AND" attribute="statCd" comparator="${less}${greater}" value="'3101.205'" />
+								<oneToMany fatherAttr="cd" sonAttr="leftCd">
+									<selectSpec subject="RsrcRel" tableName="HIVE.RC_RSRC_REL">
+										<includedAttr name="id" />
+										<includedAttr name="leftCd" />
+										<includedAttr name="leftNmCn" />
+										<includedAttr name="rightCd" />
+										<includedAttr name="rightNmCn" />
+										<includedAttr name="catCd" />
+										<includedAttr name="catNmCn" />
+									</selectSpec>
+								</oneToMany>
+								<!-- 菜单项的子菜单项 -->
+								<oneToMany fatherAttr="cd" sonAttr="prntCd">
+									<selectSpec tableName="HIVE.RC_MENU_ITM" defaultOrderBy="cd">
+										<includedAttr name="id" />
+										<includedAttr name="cd" />
+										<includedAttr name="nmCn" />
+										<includedAttr name="nmEn" />
+										<includedAttr name="url" />
+										<includedAttr name="catCd" />
+										<includedAttr name="catNmCn" />
+									</selectSpec>
+								</oneToMany>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+
+					<!-- 单次查询授权访问的菜单项，左关联查询及其子项 -->
+					<selectSpec selectPrefix="distinct" subject="AuthorMenuItmTree" tableName="HIVE.RC_MENU_ITM" desc="单次查询授权访问的菜单项，左关联查询及其子项">
+						<excludedAttr name="*" />
+						<!-- <resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" /> -->
+						<oneToOne fatherAttr="id" sonAttr="id">
+							<selectSpec tableName="HIVE.RC_RSRC" defaultOrderBy="viewOrd">
+								<includedAttr name="id" />
+								<includedAttr name="cd" />
+								<includedAttr name="nmCn" />
+								<includedAttr name="url" />
+								<resultFilter attribute="catCd" comparator="=" value="'3100.205'" />
+								<resultFilter begin="AND" attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<resultFilter begin="AND" attribute="statCd" comparator="${less}${greater}" value="'3101.205'" />
+								<oneToOne fatherAttr="id" sonAttr="rightId">
+									<selectSpec tableName="HIVE.SC_PERMISSION">
+										<excludedAttr name="*" />
+										<oneToOne fatherAttr="leftId" sonAttr="id">
+											<selectSpec tableName="HIVE.SC_ROLE">
+												<excludedAttr name="*" />
+												<oneToOne fatherAttr="id" sonAttr="roleId">
+													<selectSpec tableName="HIVE.SC_PTY_ACCT_ROLE">
+														<excludedAttr name="*" />
+														<oneToOne fatherAttr="ptyAcctId" sonAttr="id">
+															<selectSpec tableName="HIVE.IP_PTY_ACCT">
+																<excludedAttr name="*" />
+															</selectSpec>
+														</oneToOne>
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+								<oneToOne fatherAttr="id" sonAttr="rsrcId">
+									<selectSpec tableName="HIVE.RC_PTY_RSRC">
+										<excludedAttr name="*" />
+										<resultFilter attribute="catCd" comparator="=" value="'3106.200'" />
+										<resultFilter begin="AND" attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+										<oneToOne fatherAttr="ptyId" sonAttr="id">
+											<selectSpec tableName="HIVE.IP_PTY">
+												<includedAttr name="shortNmEn" />
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+								<oneToOne fatherAttr="id" sonAttr="leftId" joinType="left">
+									<selectSpec tableName="HIVE.RC_RSRC_REL" defaultOrderBy="viewOrd">
+										<!--<includedAttr name="id" />-->
+										<includedAttr name="leftId" />
+										<!--<includedAttr name="leftCd" />-->
+										<!--<includedAttr name="leftNmCn" />-->
+										<includedAttr name="rightId" />
+										<!--<includedAttr name="rightCd" />-->
+										<!--<includedAttr name="rightNmCn" />-->
+										<!--<includedAttr name="catCd" />-->
+										<!--<includedAttr name="catNmCn" />-->
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+
+					<!--<selectSpec subject="AuthorMenuItmTree" tableName="HIVE.RC_RSRC" desc="单次查询授权访问的菜单项，左关联查询及其子项" defaultOrderBy="viewOrd">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<resultFilter attribute="catCd" comparator="=" value="'3100.205'" />
+						<oneToOne fatherAttr="id" sonAttr="id">
+							<selectSpec tableName="HIVE.RC_RSRC" defaultOrderBy="viewOrd">
+								<resultFilter attribute="catCd" comparator="=" value="'3100.205'" />
+								<resultFilter begin="AND" attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<oneToOne fatherAttr="id" sonAttr="rightId">
+									<selectSpec tableName="HIVE.SC_PERMISSION">
+										<oneToOne fatherAttr="leftId" sonAttr="id">
+											<selectSpec tableName="HIVE.SC_ROLE">
+												<oneToOne fatherAttr="id" sonAttr="roleId">
+													<selectSpec tableName="HIVE.SC_PTY_ACCT_ROLE">
+														<oneToOne fatherAttr="ptyAcctId" sonAttr="id">
+															<selectSpec tableName="HIVE.IP_PTY_ACCT">
+															</selectSpec>
+														</oneToOne>
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+								<oneToOne fatherAttr="id" sonAttr="rsrcId">
+									<selectSpec tableName="HIVE.RC_PTY_RSRC">
+										<resultFilter attribute="catCd" comparator="=" value="'3106.200'" />
+										<resultFilter begin="AND" attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+										<oneToOne fatherAttr="ptyId" sonAttr="id">
+											<selectSpec tableName="HIVE.IP_PTY">
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+								<oneToOne fatherAttr="id" sonAttr="leftId" joinType="left">
+									<selectSpec tableName="HIVE.RC_RSRC_REL">
+										<includedAttr name="id" />
+										<includedAttr name="leftId" />
+										<includedAttr name="leftCd" />
+										<includedAttr name="leftNmCn" />
+										<includedAttr name="rightId" />
+										<includedAttr name="rightCd" />
+										<includedAttr name="rightNmCn" />
+										<includedAttr name="catCd" />
+										<includedAttr name="catNmCn" />
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>-->
+
+					<!-- 单次查询菜单项，左关联查询及其子项 -->
+					<selectSpec subject="MenuItmTree" tableName="HIVE.RC_MENU_ITM" desc="单次查询授权访问的菜单项，左关联查询及其子项">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<oneToOne fatherAttr="id" sonAttr="id">
+							<selectSpec tableName="HIVE.RC_RSRC" defaultOrderBy="viewOrd">
+								<resultFilter attribute="catCd" comparator="=" value="'3100.205'" />
+								<resultFilter begin="AND" attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<resultFilter begin="AND" attribute="statCd" comparator="${less}${greater}" value="'3101.205'" />
+								<oneToOne fatherAttr="id" sonAttr="leftId" joinType="left">
+									<selectSpec tableName="HIVE.RC_RSRC_REL">
+										<includedAttr name="id" />
+										<includedAttr name="leftId" />
+										<includedAttr name="leftCd" />
+										<includedAttr name="leftNmCn" />
+										<includedAttr name="rightId" />
+										<includedAttr name="rightCd" />
+										<includedAttr name="rightNmCn" />
+										<includedAttr name="catCd" />
+										<includedAttr name="catNmCn" />
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+
+				</daoSpec>
+
+				<oprSpec shortName="HIVE.RC_MENU_ITM" desc="菜单项">
+
+					<addSpec subject="MenuItm" tableName="HIVE.RC_MENU_ITM" desc="菜单项">
+						<insertSpec tableName="HIVE.RC_RSRC" desc="资源" insertExpr="catCd=CmCatSysCode.RsrcMenuItem; editFlag=CmCatSysCode.RevisionNew.cd()" updateExpr="editFlag=CmCatSysCode.RevisionUpdated.cd()">
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.RC_MENU_ITM" desc="菜单项">
+								</insertSpec>
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+
+				</oprSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

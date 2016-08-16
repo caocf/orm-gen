@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="合约项" />
+	<property name="rootTableName" value="HIVE.AR_ARGMT_ITM" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<daoSpec shortName="HIVE.AR_ARGMT_ITM" desc="合约项">
+					<selectSpec subject="ArgmtItm" tableName="HIVE.AR_ARGMT_ITM" defaultOrderBy="updTm" desc="合约项">
+					</selectSpec>
+				</daoSpec>
+				
+				<daoSpec shortName="HIVE.AR_ARGMT" desc="合约">
+					<selectSpec subject="Argmt" tableName="HIVE.AR_ARGMT" defaultOrderBy="updTm" desc="合约">
+					</selectSpec>
+				</daoSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

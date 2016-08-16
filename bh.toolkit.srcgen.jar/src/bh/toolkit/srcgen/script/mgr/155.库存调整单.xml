@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="库存调整单" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.argmt.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="AR.INVEN_ADJ_REQT" desc="${cnName}管理">
+
+						<daoSpec shortName="HIVE.AR_INVEN_ADJ_REQT" desc="查询${cnName}" />
+						<oprSpec shortName="HIVE.AR_INVEN_ADJ_REQT" desc="新增、修改、删除${cnName}" />
+
+						<svcMethodSpec verb="add" subject="InvenAdjReqt" tableName="HIVE.AR_INVEN_ADJ_REQT" returnDataType="int" expCode="210270" desc="增加库存调整单" />
+						<svcMethodSpec verb="change" subject="InvenAdjReqt" tableName="HIVE.AR_INVEN_ADJ_REQT" returnDataType="int" expCode="210272" desc="修改库存调整单" />
+						<svcMethodSpec verb="remove" subject="InvenAdjReqt" tableName="HIVE.AR_INVEN_ADJ_REQT" returnDataType="int" expCode="210274" desc="移除库存调整单" />
+						<svcMethodSpec verb="find" subject="InvenAdjReqtList" tableName="HIVE.AR_INVEN_ADJ_REQT" returnDataType="java.util.List" expCode="210276" desc="查看库存调整单列表" />
+						<svcMethodSpec verb="count" subject="InvenAdjReqtList" tableName="HIVE.AR_INVEN_ADJ_REQT" returnDataType="int" expCode="210278" desc="查看库存调整单列表" />
+						<svcMethodSpec verb="find" subject="InvenAdjReqtDetail" tableName="HIVE.AR_INVEN_ADJ_REQT" returnDataType="dtox" expCode="210280" desc="查看库存调整单详细信息" />
+						<svcMethodSpec verb="find" subject="InvenAdjReqtItmList" tableName="HIVE.AR_INVEN_ADJ_REQT_ITM" returnDataType="list" expCode="210282" desc="查看库存调整单明细列表" />
+						<svcMethodSpec verb="find" subject="InvenAdjReqtItmDetail" tableName="HIVE.AR_INVEN_ADJ_REQT_ITM" returnDataType="dtox" expCode="210284" desc="查看库存调整单明细详细信息" />
+						<svcMethodSpec verb="add" subject="InvenAdjReqtItm" tableName="HIVE.AR_INVEN_ADJ_REQT_ITM" returnDataType="int" expCode="210286" desc="增加库存调整单明细" />
+						<svcMethodSpec verb="change" subject="InvenAdjReqtItm" tableName="HIVE.AR_INVEN_ADJ_REQT_ITM" returnDataType="int" expCode="210288" desc="修改库存调整单明细" />
+						<svcMethodSpec verb="remove" subject="InvenAdjReqtItm" tableName="HIVE.AR_INVEN_ADJ_REQT_ITM" returnDataType="int" expCode="210290" desc="移除库存调整单明细" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

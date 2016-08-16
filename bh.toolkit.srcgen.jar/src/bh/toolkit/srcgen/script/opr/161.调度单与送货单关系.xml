@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="调度单与送货单之间的关系" />
+	<property name="rootTableName" value="HIVE.AR_ARGMT_REL" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+
+				<daoSpec shortName="HIVE.AR_ARGMT_REL" desc="调度单与送货单之间的关系">
+					<selectSpec subject="ArgmtRelBasic" tableName="HIVE.AR_ARGMT_REL" defaultOrderBy="updTm" desc="调度单">
+						<oneToOne fatherAttr="rightId" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_DELIV_ORD" desc="送货单">
+								<oneToOne fatherAttr="id" sonAttr="id">
+									<selectSpec tableName="HIVE.AR_ARGMT" desc="送貨单詳細信息">
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="leftId" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_DSPCH_ORD" desc="调度单">
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+				</daoSpec>
+
+
+				<!-- OPR接口说明 ，oprSpec的shortName决定了OPR接口的名称-->
+				<oprSpec shortName="HIVE.AR_ARGMT_REL" desc="${cnName}数据操作">
+
+					<!-- addSpec的subject（如果有）决定了new方法和append方法的名称，tableName决定了方法入参DTOX的名字 -->
+					<addSpec subject="ArgmtRel" tableName="HIVE.AR_ARGMT_REL" desc="调度单与送货单之间的关系">
+						<insertSpec tableName="${rootTableName}" desc="${cnName}" insertExpr="catCd=CmCatSysCode.ArgmtDspchOrd; editFlag=CmCatSysCode.RevisionNew.cd()" enableSelectKey="true">
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.AR_DELIV_ORD" desc="送货单">
+								</insertSpec>
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+					<removeSpec tableName="HIVE.AR_ARGMT_REL" desc="删除调度单与送货单之间的关系">
+					</removeSpec>
+
+				</oprSpec>
+			</artifactSpec>
+		</buildArtifacts>
+	</target>
+</project>

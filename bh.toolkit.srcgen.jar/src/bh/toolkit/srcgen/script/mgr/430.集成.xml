@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方服务" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.intg.adp.excel.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="SI.PTY_SVC_OPR" desc="${cnName}管理">
+
+						<daoSpec shortName="HIVE.SI_PTY_MSG_ELM" desc="查询参与方消息元素" />
+						<daoSpec shortName="HIVE.SI_PTY_SVC_OPR" desc="查询${cnName}" />
+						<daoSpec shortName="HIVE.SI_TRANS_R" desc="查询转换规则" />
+						
+						<oprSpec shortName="HIVE.IP_ORG" desc="新增企业信息" />
+
+						<svcMethodSpec verb="import" subject="Workbook" tableName="HIVE.SI_PTY_SVC_OPR" returnDataType="int" expCode="820005" desc="导入工作簿" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

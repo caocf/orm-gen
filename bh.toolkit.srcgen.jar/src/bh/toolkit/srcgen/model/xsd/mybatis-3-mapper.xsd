@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name="mapper">
+        <xsd:annotation>
+            <xsd:documentation>
+
+       Copyright 2009-2013 the original author or authors.
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
+</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:choice maxOccurs="unbounded" minOccurs="1">
+                <xsd:element ref="cache-ref"/>
+                <xsd:element ref="cache"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="resultMap"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="parameterMap"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="sql"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="insert"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="update"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="delete"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="select"/>
+            </xsd:choice>
+            <xsd:attribute name="namespace" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="cache-ref">
+        <xsd:complexType>
+            <xsd:attribute name="namespace" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="cache">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="property"/>
+            </xsd:sequence>
+            <xsd:attribute name="type" type="xsd:string" use="optional"/>
+            <xsd:attribute name="eviction" type="xsd:string" use="optional"/>
+            <xsd:attribute name="flushInterval" type="xsd:string" use="optional"/>
+            <xsd:attribute name="size" type="xsd:string" use="optional"/>
+            <xsd:attribute name="readOnly" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="parameterMap">
+        <xsd:complexType>
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+                <xsd:element maxOccurs="unbounded" minOccurs="1" ref="parameter"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="type" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="parameter">
+        <xsd:complexType>
+            <xsd:attribute name="property" type="xsd:string" use="required"/>
+            <xsd:attribute name="javaType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="jdbcType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="mode" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="IN"/>
+                        <xsd:enumeration value="OUT"/>
+                        <xsd:enumeration value="INOUT"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="resultMap" type="xsd:string" use="optional"/>
+            <xsd:attribute name="scale" type="xsd:string" use="optional"/>
+            <xsd:attribute name="typeHandler" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="resultMap">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="constructor"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="id"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="result"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="association"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="collection"/>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="discriminator"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="type" type="xsd:string" use="required"/>
+            <xsd:attribute name="extends" type="xsd:string" use="optional"/>
+            <xsd:attribute name="autoMapping" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="true"/>
+                        <xsd:enumeration value="false"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="constructor">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="idArg"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="arg"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="id">
+        <xsd:complexType>
+            <xsd:attribute name="property" type="xsd:string" use="optional"/>
+            <xsd:attribute name="javaType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="column" type="xsd:string" use="optional"/>
+            <xsd:attribute name="jdbcType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="typeHandler" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="result">
+        <xsd:complexType>
+            <xsd:attribute name="property" type="xsd:string" use="optional"/>
+            <xsd:attribute name="javaType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="column" type="xsd:string" use="optional"/>
+            <xsd:attribute name="jdbcType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="typeHandler" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="idArg">
+        <xsd:complexType>
+            <xsd:attribute name="javaType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="column" type="xsd:string" use="optional"/>
+            <xsd:attribute name="jdbcType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="typeHandler" type="xsd:string" use="optional"/>
+            <xsd:attribute name="select" type="xsd:string" use="optional"/>
+            <xsd:attribute name="resultMap" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="arg">
+        <xsd:complexType>
+            <xsd:attribute name="javaType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="column" type="xsd:string" use="optional"/>
+            <xsd:attribute name="jdbcType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="typeHandler" type="xsd:string" use="optional"/>
+            <xsd:attribute name="select" type="xsd:string" use="optional"/>
+            <xsd:attribute name="resultMap" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="collection">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="constructor"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="id"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="result"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="association"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="collection"/>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="discriminator"/>
+            </xsd:sequence>
+            <xsd:attribute name="property" type="xsd:string" use="required"/>
+            <xsd:attribute name="column" type="xsd:string" use="optional"/>
+            <xsd:attribute name="javaType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="ofType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="jdbcType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="select" type="xsd:string" use="optional"/>
+            <xsd:attribute name="resultMap" type="xsd:string" use="optional"/>
+            <xsd:attribute name="typeHandler" type="xsd:string" use="optional"/>
+            <xsd:attribute name="notNullColumn" type="xsd:string" use="optional"/>
+            <xsd:attribute name="columnPrefix" type="xsd:string" use="optional"/>
+            <xsd:attribute name="resultSet" type="xsd:string" use="optional"/>
+            <xsd:attribute name="foreignColumn" type="xsd:string" use="optional"/>
+            <xsd:attribute name="autoMapping" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="true"/>
+                        <xsd:enumeration value="false"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="fetchType" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="lazy"/>
+                        <xsd:enumeration value="eager"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="association">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="constructor"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="id"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="result"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="association"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="collection"/>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="discriminator"/>
+            </xsd:sequence>
+            <xsd:attribute name="property" type="xsd:string" use="required"/>
+            <xsd:attribute name="column" type="xsd:string" use="optional"/>
+            <xsd:attribute name="javaType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="jdbcType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="select" type="xsd:string" use="optional"/>
+            <xsd:attribute name="resultMap" type="xsd:string" use="optional"/>
+            <xsd:attribute name="typeHandler" type="xsd:string" use="optional"/>
+            <xsd:attribute name="notNullColumn" type="xsd:string" use="optional"/>
+            <xsd:attribute name="columnPrefix" type="xsd:string" use="optional"/>
+            <xsd:attribute name="resultSet" type="xsd:string" use="optional"/>
+            <xsd:attribute name="foreignColumn" type="xsd:string" use="optional"/>
+            <xsd:attribute name="autoMapping" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="true"/>
+                        <xsd:enumeration value="false"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="fetchType" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="lazy"/>
+                        <xsd:enumeration value="eager"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="discriminator">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="1" ref="case"/>
+            </xsd:sequence>
+            <xsd:attribute name="column" type="xsd:string" use="optional"/>
+            <xsd:attribute name="javaType" type="xsd:string" use="required"/>
+            <xsd:attribute name="jdbcType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="typeHandler" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="case">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="constructor"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="id"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="result"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="association"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="collection"/>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="discriminator"/>
+            </xsd:sequence>
+            <xsd:attribute name="value" type="xsd:string" use="required"/>
+            <xsd:attribute name="resultMap" type="xsd:string" use="optional"/>
+            <xsd:attribute name="resultType" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="property">
+        <xsd:complexType>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+            <xsd:attribute name="value" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="typeAlias">
+        <xsd:complexType>
+            <xsd:attribute name="alias" type="xsd:string" use="required"/>
+            <xsd:attribute name="type" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="select">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="parameterMap" type="xsd:string" use="optional"/>
+            <xsd:attribute name="parameterType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="resultMap" type="xsd:string" use="optional"/>
+            <xsd:attribute name="resultType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="resultSetType" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="FORWARD_ONLY"/>
+                        <xsd:enumeration value="SCROLL_INSENSITIVE"/>
+                        <xsd:enumeration value="SCROLL_SENSITIVE"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="statementType" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="STATEMENT"/>
+                        <xsd:enumeration value="PREPARED"/>
+                        <xsd:enumeration value="CALLABLE"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="fetchSize" type="xsd:string" use="optional"/>
+            <xsd:attribute name="timeout" type="xsd:string" use="optional"/>
+            <xsd:attribute name="flushCache" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="true"/>
+                        <xsd:enumeration value="false"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="useCache" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="true"/>
+                        <xsd:enumeration value="false"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="databaseId" type="xsd:string" use="optional"/>
+            <xsd:attribute name="lang" type="xsd:string" use="optional"/>
+            <xsd:attribute name="resultOrdered" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="true"/>
+                        <xsd:enumeration value="false"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="resultSets" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="insert">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="selectKey"/>
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="parameterMap" type="xsd:string" use="optional"/>
+            <xsd:attribute name="parameterType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="timeout" type="xsd:string" use="optional"/>
+            <xsd:attribute name="flushCache" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="true"/>
+                        <xsd:enumeration value="false"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="statementType" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="STATEMENT"/>
+                        <xsd:enumeration value="PREPARED"/>
+                        <xsd:enumeration value="CALLABLE"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="keyProperty" type="xsd:string" use="optional"/>
+            <xsd:attribute name="useGeneratedKeys" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="true"/>
+                        <xsd:enumeration value="false"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="keyColumn" type="xsd:string" use="optional"/>
+            <xsd:attribute name="databaseId" type="xsd:string" use="optional"/>
+            <xsd:attribute name="lang" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="selectKey">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+            <xsd:attribute name="resultType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="statementType" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="STATEMENT"/>
+                        <xsd:enumeration value="PREPARED"/>
+                        <xsd:enumeration value="CALLABLE"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="keyProperty" type="xsd:string" use="optional"/>
+            <xsd:attribute name="keyColumn" type="xsd:string" use="optional"/>
+            <xsd:attribute name="order" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="BEFORE"/>
+                        <xsd:enumeration value="AFTER"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="databaseId" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="update">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="selectKey"/>
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="parameterMap" type="xsd:string" use="optional"/>
+            <xsd:attribute name="parameterType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="timeout" type="xsd:string" use="optional"/>
+            <xsd:attribute name="flushCache" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="true"/>
+                        <xsd:enumeration value="false"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="statementType" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="STATEMENT"/>
+                        <xsd:enumeration value="PREPARED"/>
+                        <xsd:enumeration value="CALLABLE"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="keyProperty" type="xsd:string" use="optional"/>
+            <xsd:attribute name="useGeneratedKeys" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="true"/>
+                        <xsd:enumeration value="false"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="keyColumn" type="xsd:string" use="optional"/>
+            <xsd:attribute name="databaseId" type="xsd:string" use="optional"/>
+            <xsd:attribute name="lang" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="delete">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="parameterMap" type="xsd:string" use="optional"/>
+            <xsd:attribute name="parameterType" type="xsd:string" use="optional"/>
+            <xsd:attribute name="timeout" type="xsd:string" use="optional"/>
+            <xsd:attribute name="flushCache" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="true"/>
+                        <xsd:enumeration value="false"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="statementType" use="optional">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="STATEMENT"/>
+                        <xsd:enumeration value="PREPARED"/>
+                        <xsd:enumeration value="CALLABLE"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="databaseId" type="xsd:string" use="optional"/>
+            <xsd:attribute name="lang" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="include">
+        <xsd:annotation>
+            <xsd:documentation> Dynamic </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="refid" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="bind">
+        <xsd:complexType>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+            <xsd:attribute name="value" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="sql">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="lang" type="xsd:string" use="optional"/>
+            <xsd:attribute name="databaseId" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="trim">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+            <xsd:attribute name="prefix" type="xsd:string" use="optional"/>
+            <xsd:attribute name="prefixOverrides" type="xsd:string" use="optional"/>
+            <xsd:attribute name="suffix" type="xsd:string" use="optional"/>
+            <xsd:attribute name="suffixOverrides" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="where">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="set">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="foreach">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+            <xsd:attribute name="collection" type="xsd:string" use="required"/>
+            <xsd:attribute name="item" type="xsd:string" use="optional"/>
+            <xsd:attribute name="index" type="xsd:string" use="optional"/>
+            <xsd:attribute name="open" type="xsd:string" use="optional"/>
+            <xsd:attribute name="close" type="xsd:string" use="optional"/>
+            <xsd:attribute name="separator" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="choose">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="when"/>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="otherwise"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="when">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+            <xsd:attribute name="test" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="otherwise">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="if">
+        <xsd:complexType mixed="true">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element ref="include"/>
+                <xsd:element ref="trim"/>
+                <xsd:element ref="where"/>
+                <xsd:element ref="set"/>
+                <xsd:element ref="foreach"/>
+                <xsd:element ref="choose"/>
+                <xsd:element ref="if"/>
+                <xsd:element ref="bind"/>
+            </xsd:choice>
+            <xsd:attribute name="test" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

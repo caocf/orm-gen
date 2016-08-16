@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+				<trxSpec>
+
+					<!-- MGRX接口和实现的说明，mgrSpec的shortName决定了mgrXIntf和mgrXImpl的包名和类名。根据业务模块的不同修改105.InitCtx.properties文件中的workspace.mgrPrj属性 -->
+					<mgrSpec shortName="ip.pty" desc="参与方管理">
+						<oprSpec shortName="HIVE.IP_PTY" />
+						<oprSpec shortName="HIVE.GD_GOODS" />
+					</mgrSpec>
+
+				</trxSpec>
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

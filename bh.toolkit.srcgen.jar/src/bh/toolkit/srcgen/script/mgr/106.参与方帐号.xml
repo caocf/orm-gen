@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方帐号" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.party.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="IP.PTY_ACCT" desc="${cnName}管理">
+
+						<oprSpec shortName="HIVE.IP_PTY_ACCT" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.IP_PTY_ACCT" desc="查询${cnName}" />
+
+						<svcMethodSpec verb="find" subject="PtyList" tableName="HIVE.IP_PTY" returnDataType="java.util.List" expCode="111099" desc="查询参与方" />
+						<svcMethodSpec verb="count" subject="PtyList" tableName="HIVE.IP_PTY" returnDataType="int" expCode="111100" desc="计算参与方的总数" />
+						<svcMethodSpec verb="find" subject="PtyAcctList" tableName="HIVE.IP_PTY_ACCT" returnDataType="java.util.List" expCode="111101" desc="查询参与方帐号" />
+						<svcMethodSpec verb="count" subject="PtyAcctList" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111102" desc="计算参与方帐号的总数" />
+						<svcMethodSpec verb="find" subject="AuthenPtyAcct" tableName="HIVE.IP_PTY_ACCT" paramDataType="java.lang.String" returnDataType="dtox" expCode="111103" desc="查询已登录参与方帐号" />
+						<svcMethodSpec verb="judge" subject="AuthenPtyAcct" tableName="HIVE.IP_PTY_ACCT" paramDataType="java.lang.String" returnDataType="dtox" expCode="111103" desc="查询已登录参与方帐号" />
+						<svcMethodSpec verb="new" subject="PtyAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111110" desc="新增参与方帐号" />
+						<svcMethodSpec verb="change" subject="PtyAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111111" desc="修改参与方帐号" />
+						<svcMethodSpec verb="remove" subject="PtyAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111150" desc="移除参与方帐号" />
+						<svcMethodSpec verb="find" subject="Acct" tableName="HIVE.IP_PTY_ACCT" paramDataType="java.lang.String" returnDataType="dtox" expCode="111110" desc="查询参与方帐号" />
+
+						<daoSpec shortName="HIVE.IP_PTY_ACCT_PTY" desc="查询 IP_PTY_ACCT_PTY" />
+
+						<svcMethodSpec verb="find" subject="GrantedPtyAcctPtyList" tableName="HIVE.IP_PTY" returnDataType="java.util.List" expCode="111099" desc="查询参与方" />
+						<svcMethodSpec verb="count" subject="GrantedPtyAcctPtyList" tableName="HIVE.IP_PTY" returnDataType="int" expCode="111100" desc="计算参与方的总数" />
+						<svcMethodSpec verb="find" subject="UnGrantedPtyAcctPtyList" tableName="HIVE.IP_PTY" returnDataType="java.util.List" expCode="111099" desc="查询参与方" />
+						<svcMethodSpec verb="count" subject="UnGrantedPtyAcctPtyList" tableName="HIVE.IP_PTY" returnDataType="int" expCode="111100" desc="计算参与方的总数" />
+						<svcMethodSpec verb="new" subject="PtyAcctPty" tableName="HIVE.IP_PTY_ACCT_PTY" returnDataType="int" expCode="111110" desc="新增参与方帐号" />
+						<svcMethodSpec verb="remove" subject="PtyAcctPty" tableName="HIVE.IP_PTY_ACCT_PTY" returnDataType="int" expCode="111150" desc="移除参与方帐号" />
+
+						<daoSpec shortName="HIVE.SC_PTY_ACCT_ROLE" desc="查询 SC_PTY_ACCT_ROLE" />
+						<svcMethodSpec verb="find" subject="GrantedRoleAcctPtyList" tableName="HIVE.SC_ROLE" returnDataType="java.util.List" expCode="111099" desc="查询参与方" />
+						<svcMethodSpec verb="count" subject="GrantedRoleAcctPtyList" tableName="HIVE.SC_ROLE" returnDataType="int" expCode="111100" desc="计算参与方的总数" />
+						<svcMethodSpec verb="find" subject="UnGrantedRoleAcctPtyList" tableName="HIVE.SC_ROLE" returnDataType="java.util.List" expCode="111099" desc="查询参与方" />
+						<svcMethodSpec verb="count" subject="UnGrantedRoleAcctPtyList" tableName="HIVE.SC_ROLE" returnDataType="int" expCode="111100" desc="计算参与方的总数" />
+						<svcMethodSpec verb="new" subject="grantRole" tableName="HIVE.SC_PTY_ACCT_ROLE" returnDataType="int" expCode="111110" desc="新增角色" />
+						<svcMethodSpec verb="remove" subject="revokeRole" tableName="HIVE.SC_PTY_ACCT_ROLE" returnDataType="int" expCode="111150" desc="移除角色" />
+
+						<!-- 查询货主用户信息,根据ID去重 -->
+						<svcMethodSpec verb="find" subject="cargoOwnerAcctDistinct" tableName="HIVE.IP_PTY_ACCT" returnDataType="java.util.List" expCode="111101" desc="查询货主用户信息" />
+						<svcMethodSpec verb="count" subject="cargoOwnerAcctDistinct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111102" desc="计算货主用户信息的总数" />
+
+						<!-- 查询货主用户信息 -->
+						<svcMethodSpec verb="find" subject="cargoOwnerAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="java.util.List" expCode="111101" desc="查询货主用户信息" />
+						<svcMethodSpec verb="count" subject="cargoOwnerAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111102" desc="计算货主用户信息的总数" />
+
+						<!-- 删除货主用户 -->
+						<svcMethodSpec verb="remove" subject="cargoOwnerAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111151" desc="删除货主用户 " />
+
+						<!-- 查询用户的货主信息 -->
+						<svcMethodSpec verb="find" subject="acctCargoOwner" tableName="HIVE.IP_PTY_ACCT" returnDataType="java.util.List" expCode="111103" desc="查询用户的货主信息" />
+						<svcMethodSpec verb="count" subject="acctCargoOwner" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111104" desc="计算用户的货主信息的总数" />
+
+						<!-- 查询司机用户信息,根据ID去重 -->
+						<svcMethodSpec verb="find" subject="driverAcctDistinct" tableName="HIVE.IP_PTY_ACCT" returnDataType="java.util.List" expCode="111105" desc="查询司机用户信息" />
+						<svcMethodSpec verb="count" subject="driverAcctDistinct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111106" desc="计算司机用户信息的总数" />
+
+						<!-- 查询司机用户信息 -->
+						<svcMethodSpec verb="find" subject="driverAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="java.util.List" expCode="111105" desc="查询司机用户信息" />
+						<svcMethodSpec verb="count" subject="driverAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111106" desc="计算司机用户信息的总数" />
+
+						<!-- 新增司机用户 -->
+						<svcMethodSpec verb="new" subject="driverAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111155" desc="新增司机用户 " />
+						<svcMethodSpec verb="change" subject="driverAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111156" desc="修改司机用户 " />
+
+						<!-- 判断司机用户是否已经存在 -->
+						<svcMethodSpec verb="find" subject="existDriverAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="java.util.List" expCode="111107" desc="司机用户列表 " />
+						<svcMethodSpec verb="count" subject="existDriverAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111108" desc="司机用户数量 " />
+
+						<!-- 删除司机用户 -->
+						<svcMethodSpec verb="remove" subject="driverAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111157" desc="删除司机用户 " />
+
+						<!-- 启用禁用司机用户 -->
+						<svcMethodSpec verb="disable" subject="driverAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111165" desc="禁用司机用户 " />
+						<svcMethodSpec verb="enable" subject="driverAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111166" desc="启用司机用户 " />
+
+						<!-- 新增司机用户位置信息 -->
+						<svcMethodSpec verb="new" subject="driverAcctLoc" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111163" desc="新增司机用户位置 " />
+
+						<!-- 判断登录用户是否是云商链平台特权用户 -->
+						<svcMethodSpec verb="is" subject="privilegeAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111160" desc="判断登录用户是否是云商链特权用户 " />
+
+						<!-- 分配货主用户到承运方 -->
+						<svcMethodSpec verb="dispatch" subject="cargoOwnerAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111161" desc="分配货主用户到承运方 " />
+
+						<!-- 修改货主用户备注 -->
+						<svcMethodSpec verb="change" subject="cargoOwnerAcct" tableName="HIVE.IP_PTY_ACCT" returnDataType="int" expCode="111161" desc="分配货主用户到承运方 " />
+	
+						<!-- 判断司机用户是否与车辆关联 -->
+						<svcMethodSpec verb="is" subject="DriverAcctOnVecl" tableName="HIVE.IP_PTY_ACCT" returnDataType="java.util.List" expCode="111168" desc="司机用户是否与车关联 " />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

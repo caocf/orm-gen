@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方与商品" />
+	<property name="rootTableName" value="HIVE.GD_PTY_GOODS" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- DAO接口说明，shortName决定了DAO的名称 -->
+				<daoSpec shortName="${rootTableName}" desc="${cnName}">
+					<selectSpec subject="PtyGoods" tableName="${rootTableName}" defaultOrderBy="updTm" desc="查询${cnName}">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<oneToOne fatherAttr="ptyId" sonAttr="id">
+							<selectSpec tableName="HIVE.IP_PTY" desc="参与方">
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="id">
+							<selectSpec tableName="HIVE.GD_PTY_GOODS_SPEC" desc="参与方的商品说明" />
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="id">
+							<selectSpec tableName="HIVE.GD_PTY_GOODS_BR" desc="参与方商品的业务规则" />
+						</oneToOne>
+					</selectSpec>
+				</daoSpec>
+
+				<!-- OPR接口说明 ，oprSpec的shortName决定了OPR接口的名称-->
+				<oprSpec shortName="${rootTableName}" desc="${cnName}数据操作">
+
+					<addSpec subject="PtyGoods" tableName="${rootTableName}" desc="新增${cnName}">
+						<insertSpec tableName="${rootTableName}" desc="${cnName}" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.GD_PTY_GOODS_SPEC" desc="参与方的商品说明" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()" />
+							</oneToOne>
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.GD_PTY_GOODS_BR" desc="参与方商品的业务规则" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()" />
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+
+					<removeSpec subject="PtyGoods" tableName="${rootTableName}" desc="删除${cnName}">
+					</removeSpec>
+
+				</oprSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

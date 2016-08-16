@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="allTasks" default="allTasks">
+
+	<!-- Global attributes -->
+	<property file="105.InitCtx.properties" />
+
+	<!-- Initiate the global varialbles -->
+	<target name="initCtx">
+
+		<echo message="Run the target 'initCtx'..." />
+
+		<!-- 由于在Eclipse环境中启动Ant时指定了classpath，所以在此不需要配置：<path id="dependencyFinder" />，
+		也不需要在<taskdef/>中定义：<classpath refid="dependencyFinder" /> -->
+		<taskdef name="initCtx" classname="bh.toolkit.srcgen.task.InitCtx" />
+
+		<initCtx>
+			<artifactSpec>
+				<!-- 全局配置项 -->
+				<commonAttrSpec>
+					<!-- 数据源属性，当需要访问多个DB Schema时，用半角逗号分隔，放在第一位的为默认Schema。 -->
+					<datasourceSpec dbType="${datasource.dbType}"
+					                driver="${datasource.driver}"
+					                connUrl="${datasource.connUrl}"
+					                user="${datasource.user}"
+					                password="${datasource.password}"
+					                schema="${datasource.schema}" />
+					<!-- 工作产出共享参数 -->
+					<workspaceSpec ideWorkspace="${workspace.ideWorkspace}"
+					               commonPrj="${workspace.commonPrj}"
+					               transObjPrj="${workspace.transObjPrj}"
+					               ormPrj="${workspace.ormPrj}"
+					               compDescPrj="${workspace.compDescPrj}"
+					               mgrPrj="com.cbc.svc.party.jar"
+					               srcPathName="${workspace.srcPathName}"
+					               rsrcPathName="${workspace.rsrcPathName}"
+					               pkgPrefix="${workspace.pkgPrefix}"
+					               msgCdPkgName="${workspace.msgCdPkgName}"
+					               msgPropPkgName="${workspace.msgPropPkgName}"
+					               voPkgName="${workspace.voPkgName}"
+					               dtoPkgName="${workspace.dtoPkgName}"
+					               mapperPkgName="${workspace.mapperPkgName}"
+					               daoPkgName="${workspace.daoPkgName}"
+					               oprPkgName="${workspace.oprPkgName}"
+					               mgrPkgName="${workspace.mgrPkgName}"
+					               ctrlrPkgName="{workspace.ctrlrPkgName}" />
+				</commonAttrSpec>
+			</artifactSpec>
+		</initCtx>
+	</target>
+
+	<target name="allTasks" depends="initCtx">
+
+		<ant antfile="vo/基础DAO.xml" inheritRefs="true" />
+
+	</target>
+
+</project>

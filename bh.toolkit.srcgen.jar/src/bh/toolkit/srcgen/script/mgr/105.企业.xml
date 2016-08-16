@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="企业" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.party.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="IP.ORG" desc="${cnName}管理">
+						
+						<svcMethodSpec verb="find" subject="AllCustomer" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="100118" desc="平台管理员查询货主" />
+						<svcMethodSpec verb="count" subject="AllCustomer" tableName="HIVE.IP_ORG" returnDataType="int" expCode="100112" desc="计算平台管理员查询货主总数" />
+						<svcMethodSpec verb="find" subject="AllCsnee" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="100118" desc="平台管理员查询收货方" />
+						<svcMethodSpec verb="count" subject="AllCsnee" tableName="HIVE.IP_ORG" returnDataType="int" expCode="100112" desc="计算平台管理员查询收货方总数" />
+
+
+						<oprSpec shortName="HIVE.IP_ORG" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.IP_ORG" desc="查询${cnName}" />
+						
+						<svcMethodSpec verb="find" subject="CorpByCd" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="100118" desc="查询企业" />
+						<svcMethodSpec verb="find" subject="CorpById" tableName="HIVE.IP_ORG" paramDataType="java.lang.Long" returnDataType="dtox"  expCode="100118" desc="查询企业" />
+
+						<svcMethodSpec verb="find" subject="UserCorp" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="100111" desc="查询登录用户所属企业" />
+						<svcMethodSpec verb="count" subject="UserCorp" tableName="HIVE.IP_ORG" returnDataType="int" expCode="100112" desc="计算查询登录用户所属企业总数" />
+						<svcMethodSpec verb="find" subject="AuthorCustomer" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="100113" desc="登录用户能查看的货主" />
+						<svcMethodSpec verb="count" subject="AuthorCustomer" tableName="HIVE.IP_ORG" returnDataType="int" expCode="100114" desc="计算登录用户能查看的货主总数" />
+						<svcMethodSpec verb="find" subject="AuthorCsnee" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="100115" desc="查询登录用户能查看的收货方" />
+						<svcMethodSpec verb="count" subject="AuthorCsnee" tableName="HIVE.IP_ORG" returnDataType="int" expCode="100116" desc="计算登录用户能查看的收货方总数" />
+
+						<svcMethodSpec verb="find" subject="AuthorSimpleCorpList" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="100101" desc="查询授权访问的企业信息摘要" />
+						<svcMethodSpec verb="count" subject="AuthorSimpleCorpList" tableName="HIVE.IP_ORG" returnDataType="int" expCode="100102" desc="计算授权访问的企业信息摘要总数" />
+						<svcMethodSpec verb="find" subject="SimpleCorpList" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="100101" desc="查询企业信息摘要，无授权限制" />
+						<svcMethodSpec verb="count" subject="SimpleCorpList" tableName="HIVE.IP_ORG" returnDataType="int" expCode="100102" desc="计算企业信息摘要总数，无授权限制" />
+						
+						<svcMethodSpec verb="find" subject="AuthorDetailedCorpList" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="110003" desc="查询授权访问的企业完整信息" />
+						<svcMethodSpec verb="count" subject="AuthorDetailedCorpList" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110004" desc="计算授权访问的企业完整信息总数" />
+						<svcMethodSpec verb="find" subject="DetailedCorpList" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="110003" desc="查询企业完整信息，无授权限制" />
+						<svcMethodSpec verb="count" subject="DetailedCorpList" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110004" desc="计算企业完整信息总数，无授权限制" />
+						
+						<svcMethodSpec verb="find" subject="AuthorCorpRelatedCsnee" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="110003" desc="查询授权访问的收货方信息" />
+						<svcMethodSpec verb="count" subject="AuthorCorpRelatedCsnee" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110004" desc="计算授权访问的收货方信息总数" />
+						<svcMethodSpec verb="find" subject="CorpRelatedCsnee" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="110003" desc="查询收货方无授权限制" />
+						<svcMethodSpec verb="count" subject="CorpRelatedCsnee" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110004" desc="计算收货方信息总数，无授权限制" />
+						
+						<svcMethodSpec verb="new" subject="SimpleCorp" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110001" desc="新增企业基本信息" />
+						<svcMethodSpec verb="new" subject="DetailedCorp" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110002" desc="新增企业完整信息" />
+						<svcMethodSpec verb="find" subject="SimpleCorp" tableName="HIVE.IP_ORG" paramDataType="java.lang.Long" returnDataType="dtox" expCode="110005" desc="查询企业简要信息" />
+						<svcMethodSpec verb="find" subject="DetailedCorp" tableName="HIVE.IP_ORG" paramDataType="java.lang.Long" returnDataType="dtox" expCode="110006" desc="查询企业完整信息" />
+						<svcMethodSpec verb="change" subject="SimpleCorp" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110007" desc="修改企业信息" />
+						<svcMethodSpec verb="change" subject="Consignee" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110007" desc="修改企业信息" />
+						<svcMethodSpec verb="change" subject="Customer" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110007" desc="修改企业信息" />
+
+						<svcMethodSpec verb="add" subject="SingleRelatedCorp" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110020" desc="增加单个关联企业" />
+						<svcMethodSpec verb="add" subject="MultiRelatedCorp" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110021" desc="增加多个关联企业" />
+						<svcMethodSpec verb="find" subject="RelatedCorpList" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="110022" desc="查询关联企业" />
+						<svcMethodSpec verb="add" subject="SingleRelatedLoc" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110023" desc="增加单个相关地址" />
+						<svcMethodSpec verb="add" subject="MultiRelatedLoc" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110024" desc="增加多个相关地址" />
+						<svcMethodSpec verb="find" subject="RelatedLocList" tableName="HIVE.IP_ORG" returnDataType="java.util.List" expCode="110025" desc="查询相关地址" />
+
+						<svcMethodSpec verb="find" subject="Suplr" tableName="HIVE.IP_ORG" paramDataType="java.lang.Long" expCode="110026" desc="查询收货方的供应商信息" />
+						<svcMethodSpec verb="add" subject="Consignee" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110028" desc="增加收货方" />
+						<svcMethodSpec verb="add" subject="Customer" tableName="HIVE.IP_ORG" returnDataType="int" expCode="110029" desc="增加货主" />
+
+
+						<svcMethodSpec verb="remove" subject="Corp" tableName="HIVE.IP_PTY" returnDataType="int" expCode="110050" desc="移除企业信息" />
+						<svcMethodSpec verb="remove" subject="Customer" tableName="HIVE.IP_PTY" returnDataType="int" expCode="110050" desc="移除货主信息" />
+						<svcMethodSpec verb="remove" subject="Consignee" tableName="HIVE.IP_PTY" returnDataType="int" expCode="110050" desc="移除收货方信息" />
+
+						<svcMethodSpec verb="remove" subject="CorpRel" tableName="HIVE.IP_PTY_REL" returnDataType="int" expCode="110051" desc="移除企业间关系" />
+						<svcMethodSpec verb="remove" subject="CorpLoc" tableName="HIVE.LC_PTY_LOC" returnDataType="int" expCode="110052" desc="移除企业与地址关系" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

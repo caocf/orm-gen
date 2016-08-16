@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方与位置" />
+	<property name="rootTableName" value="HIVE.LC_PTY_LOC" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- DAO接口说明，shortName决定了DAO的名称 -->
+				<daoSpec shortName="${rootTableName}" desc="参与方与位置">
+					<selectSpec subject="PtyLoc" tableName="${rootTableName}" defaultOrderBy="updTm" desc="查询${cnName}">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<oneToOne fatherAttr="locId" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.LC_LOC">
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+
+					<selectSpec subject="onlyPtyLoc" tableName="${rootTableName}" defaultOrderBy="updTm" desc="查询${cnName}">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+					</selectSpec>
+
+					<selectSpec subject="PtyAcctLoc" tableName="HIVE.LC_PTY_ACCT_LOC" defaultOrderBy="updTm" desc="查询${cnName}">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+					</selectSpec>
+				</daoSpec>
+
+				<!-- OPR接口说明 ，oprSpec的shortName决定了OPR接口的名称-->
+				<oprSpec shortName="${rootTableName}" desc="${cnName}数据操作">
+
+					<addSpec tableName="${rootTableName}" desc="新增${cnName}">
+						<insertSpec tableName="HIVE.IP_PTY" desc="参与方" enableSelectKey="true" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()" skipVerb="insert">
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.LC_PTY_LOC" desc="参与方与位置" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()" />
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+
+					<removeSpec tableName="${rootTableName}" desc="删除${cnName}">
+					</removeSpec>
+
+				</oprSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="货架" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.facility.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="FL.PTY_STOR_RACK" desc="${cnName}管理">
+
+						<oprSpec shortName="HIVE.FL_PTY_STOR_RACK" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.FL_PTY_STOR_RACK" desc="查询${cnName}" />
+
+						<svcMethodSpec verb="new" subject="PtyStorRack" tableName="HIVE.FL_PTY_STOR_RACK" returnDataType="int" expCode="140150" desc="新增参与方货架" />
+						<svcMethodSpec verb="find" subject="PtyStorRackList" tableName="HIVE.FL_PTY_STOR_RACK" returnDataType="java.util.List" expCode="140152" desc="查询参与方货架列表" />
+						<svcMethodSpec verb="count" subject="PtyStorRackList" tableName="HIVE.FL_PTY_STOR_RACK" returnDataType="int" expCode="140154" desc="计算参与方货架列表总数" />
+						<svcMethodSpec verb="find" subject="PtyStorRackDetail" tableName="HIVE.FL_PTY_STOR_RACK" paramDataType="java.lang.Long" returnDataType="dtox" expCode="140156" desc="查询参与方货架详情" />
+						<svcMethodSpec verb="remove" subject="PtyStorRack" tableName="HIVE.FL_PTY_STOR_RACK" returnDataType="int" expCode="140158" desc="移除参与方货架" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

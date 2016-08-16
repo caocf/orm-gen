@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="合约" />
+	<property name="rootTableName" value="HIVE.AR_ARGMT" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<daoSpec shortName="HIVE.AR_IN_STOCK_NOTE" desc="入库单">
+					<selectSpec subject="InStockNote" tableName="HIVE.AR_IN_STOCK_NOTE" defaultOrderBy="updTm" desc="入库单">
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_PTY_LOC_LINK">
+							</selectSpec>
+						</oneToOne>
+						<oneToMany listOfSon="inStockNoteItmList" fatherAttr="id" sonAttr="argmtId">
+							<selectSpec tableName="HIVE.AR_ARGMT_ITM">
+								<oneToOne fatherAttr="id" sonAttr="id">
+									<selectSpec tableName="HIVE.AR_IN_STOCK_NOTE_ITM">
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToMany>
+					</selectSpec>
+				</daoSpec>
+
+				<daoSpec shortName="HIVE.AR_IN_STOCK_NOTE_ITM" desc="入库单明细">
+					<selectSpec subject="InStockNoteItm" tableName="HIVE.AR_IN_STOCK_NOTE_ITM" defaultOrderBy="updTm" desc="入库单明细">
+						<oneToOne fatherAttr="id" sonAttr="id" joinType="inner">
+							<selectSpec tableName="HIVE.AR_ARGMT_ITM">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<oneToOne fatherAttr="id" sonAttr="id">
+									<selectSpec tableName="HIVE.AR_ARGMT_ITM_LINK" desc="合约明细关联">
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+						<oneToOne fatherAttr="id" sonAttr="argmtItmId" joinType="inner">
+							<selectSpec tableName="HIVE.IV_INVEN_ARGMT_ITM_REL" desc="库存与合约明细关系">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<oneToOne fatherAttr="invenId" sonAttr="id">
+									<selectSpec tableName="HIVE.IV_INVEN" desc="库存">
+										<oneToOne fatherAttr="id" sonAttr="id" joinType="left">
+											<selectSpec tableName="HIVE.IV_INVEN_FCLTY_LINK" desc="库存与设施关系">
+											</selectSpec>
+										</oneToOne>
+										<oneToOne fatherAttr="id" sonAttr="id" joinType="left">
+											<selectSpec tableName="HIVE.IV_INVEN_ARGMT_LINK" desc="库存与合约链接，表明库存来由">
+											</selectSpec>
+										</oneToOne>
+										<oneToMany fatherAttr="id" sonAttr="invenId">
+											<selectSpec tableName="HIVE.IV_INVEN_CHG" desc="库存变化">
+												<oneToOne fatherAttr="id" sonAttr="id">
+													<selectSpec tableName="HIVE.IV_INVEN_CHG_ARGMT_LINK" desc="库存变化与合约链接">
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToMany>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+				</daoSpec>
+
+				<!-- OPR接口说明 ，oprSpec的shortName决定了OPR接口的名称-->
+				<oprSpec shortName="HIVE.AR_IN_STOCK_NOTE" desc="入库单数据操作">
+
+					<!-- 新增入库单，状态为“新建” -->
+					<addSpec subject="InStockNote" tableName="HIVE.AR_IN_STOCK_NOTE" desc="入库单及状态">
+						<insertSpec tableName="HIVE.AR_ARGMT"
+						            desc="合约"
+						            insertExpr="catCd=CmCatSysCode.ArgmtInStockNote; statCd=CmCatSysCode.ArgmtStatInStockNoteNew; editFlag=CmCatSysCode.RevisionNew.cd()"
+						            updateExpr="editFlag=CmCatSysCode.RevisionUpdated.cd()">
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.AR_IN_STOCK_NOTE" desc="入库单">
+								</insertSpec>
+							</oneToOne>
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.AR_ARGMT_PTY_LOC_LINK" desc="合约所涉及的参与方">
+								</insertSpec>
+							</oneToOne>
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.AR_ARGMT_LOC" desc="合约与位置">
+								</insertSpec>
+							</oneToOne>
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.AR_ARGMT_LINK" desc="相关合约链接">
+								</insertSpec>
+							</oneToOne>
+							<oneToOne fatherAttr="id" sonAttr="argmtId">
+								<insertSpec tableName="HIVE.AR_ARGMT_STAT" desc="合约状态" insertExpr="statCd=CmCatSysCode.ArgmtStatInStockNoteNew">
+								</insertSpec>
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+
+					<removeSpec subject="InStockNote" tableName="HIVE.AR_ARGMT" desc="移除入库单">
+					</removeSpec>
+
+				</oprSpec>
+
+				<oprSpec shortName="HIVE.AR_IN_STOCK_NOTE_ITM" desc="入库单明细数据操作">
+
+					<!-- 新增入库单明细 -->
+					<addSpec subject="InStockNoteItm" tableName="HIVE.AR_IN_STOCK_NOTE_ITM" desc="单条入库单明细">
+						<insertSpec tableName="HIVE.AR_ARGMT" desc="合约" insertExpr="catCd=CmCatSysCode.ArgmtInStockNote" skipVerb="insert">
+							<oneToOne fatherAttr="id" sonAttr="argmtId">
+								<insertSpec tableName="HIVE.AR_ARGMT_ITM" desc="合约明细" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+									<oneToOne fatherAttr="id" sonAttr="id">
+										<insertSpec tableName="HIVE.AR_IN_STOCK_NOTE_ITM" desc="入库单明细" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+										</insertSpec>
+									</oneToOne>
+									<oneToOne fatherAttr="id" sonAttr="id">
+										<insertSpec tableName="HIVE.AR_ARGMT_ITM_LINK" desc="相关合约项链接" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+										</insertSpec>
+									</oneToOne>
+									<manyToMany fatherAttr="id" leftAttr="argmtItmId" rightAttr="invenId" sonAttr="id">
+										<insertSpec tableName="HIVE.IV_INVEN_ARGMT_ITM_REL"
+										            desc="库存与合约项间的关系"
+										            insertExpr="catCd=CmCatSysCode.InvenInStockNoteItm;editFlag=CmCatSysCode.RevisionNew.cd()" />
+										<!-- 新增库存记录，状态为“新建” -->
+										<insertSpec tableName="HIVE.IV_INVEN" desc="库存" insertExpr="statCd=CmCatSysCode.InvenStatNew">
+											<oneToOne fatherAttr="id" sonAttr="id">
+												<insertSpec tableName="HIVE.IV_INVEN_FCLTY_LINK" desc="库存与设施关系" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+												</insertSpec>
+											</oneToOne>
+											<oneToOne fatherAttr="id" sonAttr="id">
+												<insertSpec tableName="HIVE.IV_INVEN_ARGMT_LINK" desc="库存与合约链接，表明库存来由" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+												</insertSpec>
+											</oneToOne>
+											<oneToOne fatherAttr="id" sonAttr="invenId">
+												<insertSpec tableName="HIVE.IV_INVEN_CHG" desc="库存变化" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+													<oneToOne fatherAttr="id" sonAttr="id">
+														<insertSpec tableName="HIVE.IV_INVEN_CHG_ARGMT_LINK" desc="库存变化与合约链接" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+														</insertSpec>
+													</oneToOne>
+												</insertSpec>
+											</oneToOne>
+										</insertSpec>
+									</manyToMany>
+								</insertSpec>
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+
+					<removeSpec subject="InStockNoteItm" tableName="HIVE.AR_ARGMT_ITM" desc="移除入库单项">
+					</removeSpec>
+
+				</oprSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

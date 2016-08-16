@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="线路排单" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.route.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="RT.PTY_ARGMT_RTE_LOC" desc="${cnName}管理">
+
+						<oprSpec shortName="HIVE.RT_PTY_ARGMT_RTE_LOC" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.RT_PTY_ARGMT_RTE_LOC" desc="查询${cnName}" />
+
+						<svcMethodSpec verb="add" subject="PtyArgmtRteLoc" tableName="HIVE.RT_PTY_ARGMT_RTE_LOC" returnDataType="int" expCode="270320" desc="新增参与方的合约与线路及地点间关系" />
+						<svcMethodSpec verb="find" subject="PtyArgmtRteLocList" tableName="HIVE.RT_PTY_ARGMT_RTE_LOC" returnDataType="java.util.List" expCode="270322" desc="查看参与方的合约与线路及地点间关系列表" />
+						<svcMethodSpec verb="count" subject="PtyArgmtRteLocList" tableName="HIVE.RT_PTY_ARGMT_RTE_LOC" returnDataType="int" expCode="270324" desc="查询参与方的合约与线路及地点间关系大小" />
+						<svcMethodSpec verb="find" subject="PtyArgmtRteLocDetail" tableName="HIVE.RT_PTY_ARGMT_RTE_LOC" returnDataType="dtox" expCode="270326" desc="查看参与方的合约与线路及地点间关系明细" />
+
+						<svcMethodSpec verb="remove" subject="OnePtyArgmtRteLoc" tableName="HIVE.RT_PTY_ARGMT_RTE_LOC" returnDataType="int" expCode="270327" desc="移除单条参与方的合约与线路及地点间关系" />
+						<svcMethodSpec verb="remove" subject="MultiPtyArgmtRteLoc" tableName="HIVE.RT_PTY_ARGMT_RTE_LOC" returnDataType="int" expCode="270327" desc="移除多条参与方的合约与线路及地点间关系" />
+							
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

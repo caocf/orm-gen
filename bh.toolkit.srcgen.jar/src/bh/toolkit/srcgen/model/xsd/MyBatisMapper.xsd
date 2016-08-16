@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://slp/toolkit/ormgen/model/mybatis" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://slp/toolkit/ormgen/model/mybatis">
+
+	<complexType name="Arg">
+		<attribute name="javaType" type="string" use="optional" />
+		<attribute name="column" type="string" use="optional" />
+		<attribute name="jdbcType" type="string" use="optional" />
+		<attribute name="typeHandler" type="string" use="optional" />
+		<attribute name="select" type="string" use="optional" />
+		<attribute name="resultMap" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="IdArg">
+		<attribute name="javaType" type="string" use="optional" />
+		<attribute name="column" type="string" use="optional" />
+		<attribute name="jdbcType" type="string" use="optional" />
+		<attribute name="typeHandler" type="string" use="optional" />
+		<attribute name="select" type="string" use="optional" />
+		<attribute name="resultMap" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="Include">
+		<attribute name="refid" type="string" use="required" />
+	</complexType>
+
+	<complexType name="Association">
+		<sequence>
+			<element name="constructor" type="tns:Constructor" maxOccurs="1" minOccurs="0" />
+			<element name="id" type="tns:Id" minOccurs="0" maxOccurs="unbounded" />
+			<element name="result" type="tns:Result" minOccurs="0" maxOccurs="unbounded" />
+			<element name="association" type="tns:Association" minOccurs="0" maxOccurs="unbounded" />
+			<element name="collection" type="tns:Collection" minOccurs="0" maxOccurs="unbounded" />
+			<element name="discriminator" type="tns:Discriminator" maxOccurs="1" minOccurs="0" />
+		</sequence>
+		<attribute name="property" type="string" use="required" />
+		<attribute name="column" type="string" use="optional" />
+		<attribute name="javaType" type="string" use="optional" />
+		<attribute name="jdbcType" type="string" use="optional" />
+		<attribute name="select" type="string" use="optional" />
+		<attribute name="resultMap" type="string" use="optional" />
+		<attribute name="typeHandler" type="string" use="optional" />
+		<attribute name="notNullColumn" type="string" use="optional" />
+		<attribute name="columnPrefix" type="string" use="optional" />
+		<attribute name="resultSet" type="string" use="optional" />
+		<attribute name="foreignColumn" type="string" use="optional" />
+		<attribute name="autoMapping" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="true" />
+					<enumeration value="false" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="fetchType" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="lazy" />
+					<enumeration value="eager" />
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+
+	<complexType name="Constructor">
+		<sequence>
+			<element name="idArg" type="tns:IdArg" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="arg" type="tns:Arg" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Id">
+		<attribute name="property" type="string" use="optional" />
+		<attribute name="javaType" type="string" use="optional" />
+		<attribute name="column" type="string" use="optional" />
+		<attribute name="jdbcType" type="string" use="optional" />
+		<attribute name="typeHandler" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="Result">
+		<attribute name="property" type="string" use="optional" />
+		<attribute name="javaType" type="string" use="optional" />
+		<attribute name="column" type="string" use="optional" />
+		<attribute name="jdbcType" type="string" use="optional" />
+		<attribute name="typeHandler" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="Collection">
+		<sequence>
+			<element name="constructor" type="tns:Constructor" minOccurs="0" maxOccurs="1"></element>
+			<element name="id" type="tns:Id" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="result" type="tns:Result" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="association" type="tns:Association" minOccurs="0" maxOccurs="unbounded" />
+			<element name="collection" type="tns:Collection" minOccurs="0" maxOccurs="unbounded" />
+			<element name="discriminator" type="tns:Discriminator" minOccurs="0" maxOccurs="1" />
+		</sequence>
+		<attribute name="property" type="string" use="required" />
+		<attribute name="column" type="string" use="optional" />
+		<attribute name="javaType" type="string" use="optional" />
+		<attribute name="ofType" type="string" use="optional" />
+		<attribute name="jdbcType" type="string" use="optional" />
+		<attribute name="select" type="string" use="optional" />
+		<attribute name="resultMap" type="string" use="optional" />
+		<attribute name="typeHandler" type="string" use="optional" />
+		<attribute name="notNullColumn" type="string" use="optional" />
+		<attribute name="columnPrefix" type="string" use="optional" />
+		<attribute name="resultSet" type="string" use="optional" />
+		<attribute name="foreignColumn" type="string" use="optional" />
+		<attribute name="autoMapping" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="true" />
+					<enumeration value="false" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="fetchType" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="lazy" />
+					<enumeration value="eager" />
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+
+	<complexType name="Discriminator">
+		<sequence>
+			<element name="case" type="tns:Case" minOccurs="1" maxOccurs="unbounded" />
+		</sequence>
+		<attribute name="column" type="string" use="optional" />
+		<attribute name="javaType" type="string" use="required" />
+		<attribute name="jdbcType" type="string" use="optional" />
+		<attribute name="typeHandler" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="Case">
+		<sequence>
+			<element name="constructor" type="tns:Constructor" minOccurs="0" maxOccurs="1" />
+			<element name="id" type="tns:Id" minOccurs="0" maxOccurs="unbounded" />
+			<element name="result" type="tns:Result" minOccurs="0" maxOccurs="unbounded" />
+			<element name="association" type="tns:Association" minOccurs="0" maxOccurs="unbounded" />
+			<element name="collection" type="tns:Collection" minOccurs="0" maxOccurs="unbounded" />
+			<element name="discriminator" type="tns:Discriminator" minOccurs="0" maxOccurs="1" />
+		</sequence>
+		<attribute name="value" type="string" use="required" />
+		<attribute name="resultMap" type="string" use="optional" />
+		<attribute name="resultType" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="Foreach">
+		<choice>
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+		<attribute name="collection" type="string" use="required" />
+		<attribute name="item" type="string" use="optional" />
+		<attribute name="index" type="string" use="optional" />
+		<attribute name="open" type="string" use="optional" />
+		<attribute name="close" type="string" use="optional" />
+		<attribute name="separator" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="Trim">
+		<choice>
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+		<attribute name="prefix" type="string" use="optional" />
+		<attribute name="prefixOverrides" type="string" use="optional" />
+		<attribute name="suffix" type="string" use="optional" />
+		<attribute name="suffixOverrides" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="Where">
+		<choice>
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+	</complexType>
+
+	<complexType name="Set">
+		<choice>
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+	</complexType>
+
+	<complexType name="Choose">
+		<sequence>
+			<element name="when" type="tns:When" minOccurs="0" maxOccurs="unbounded" />
+			<element name="otherwise" type="tns:Otherwise" minOccurs="0" maxOccurs="1" />
+		</sequence>
+	</complexType>
+
+	<complexType name="Bind">
+		<attribute name="name" type="string" use="required" />
+		<attribute name="value" type="string" use="required" />
+	</complexType>
+
+	<complexType name="If">
+		<choice>
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+		<attribute name="test" type="string" use="required" />
+	</complexType>
+
+	<complexType name="Insert">
+		<choice>
+			<element name="selectKey" type="tns:SelectKey" minOccurs="0" maxOccurs="unbounded" />
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+            <element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+		<attribute name="id" type="string" use="required" />
+		<attribute name="parameterMap" type="string" use="optional" />
+		<attribute name="parameterType" type="string" use="optional" />
+		<attribute name="timeout" type="string" use="optional" />
+		<attribute name="flushCache" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="true" />
+					<enumeration value="false" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="statementType" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="STATEMENT" />
+					<enumeration value="PREPARED" />
+					<enumeration value="CALLABLE" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="keyProperty" type="string" use="optional" />
+		<attribute name="useGeneratedKeys" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="true" />
+					<enumeration value="false" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="keyColumn" type="string" use="optional" />
+		<attribute name="databaseId" type="string" use="optional" />
+		<attribute name="lang" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="When">
+		<choice>
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+		<attribute name="test" type="string" use="required" />
+	</complexType>
+
+	<complexType name="Update">
+		<choice>
+			<element name="selectKey" type="tns:SelectKey" minOccurs="0" maxOccurs="unbounded" />
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+            <element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+		<attribute name="id" type="string" use="required" />
+		<attribute name="parameterMap" type="string" use="optional" />
+		<attribute name="parameterType" type="string" use="optional" />
+		<attribute name="timeout" type="string" use="optional" />
+		<attribute name="flushCache" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="true" />
+					<enumeration value="false" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="statementType" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="STATEMENT" />
+					<enumeration value="PREPARED" />
+					<enumeration value="CALLABLE" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="keyProperty" type="string" use="optional" />
+		<attribute name="useGeneratedKeys" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="true" />
+					<enumeration value="false" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="keyColumn" type="string" use="optional" />
+		<attribute name="databaseId" type="string" use="optional" />
+		<attribute name="lang" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="TypeAlias">
+		<attribute name="alias" type="string" use="required" />
+		<attribute name="type" type="string" use="required" />
+	</complexType>
+
+	<complexType name="Sql">
+		<choice>
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+		<attribute name="id" type="string" use="required" />
+		<attribute name="lang" type="string" use="optional" />
+		<attribute name="databaseId" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="SelectKey">
+		<choice>
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+		<attribute name="resultType" type="string" use="optional" />
+		<attribute name="statementType" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="STATEMENT" />
+					<enumeration value="PREPARED" />
+					<enumeration value="CALLABLE" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="keyProperty" type="string" use="optional" />
+		<attribute name="keyColumn" type="string" use="optional" />
+		<attribute name="order" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="BEFORE" />
+					<enumeration value="AFTER" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="databaseId" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="Select">
+		<choice>
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+		<attribute name="id" type="string" use="required" />
+		<attribute name="parameterMap" type="string" use="optional" />
+		<attribute name="parameterType" type="string" use="optional" />
+		<attribute name="resultMap" type="string" use="optional" />
+		<attribute name="resultType" type="string" use="optional" />
+		<attribute name="resultSetType" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="FORWARD_ONLY" />
+					<enumeration value="SCROLL_INSENSITIVE" />
+					<enumeration value="SCROLL_SENSITIVE" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="statementType" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="STATEMENT" />
+					<enumeration value="PREPARED" />
+					<enumeration value="CALLABLE" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="fetchSize" type="string" use="optional" />
+		<attribute name="timeout" type="string" use="optional" />
+		<attribute name="flushCache" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="true" />
+					<enumeration value="false" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="useCache" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="true" />
+					<enumeration value="false" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="databaseId" type="string" use="optional" />
+		<attribute name="lang" type="string" use="optional" />
+		<attribute name="resultOrdered" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="true" />
+					<enumeration value="false" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="resultSets" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="ResultMap">
+		<sequence>
+			<element name="constructor" minOccurs="0" maxOccurs="1" type="tns:Constructor" />
+			<element name="idType" minOccurs="0" maxOccurs="unbounded" type="tns:Id" />
+			<element name="result" minOccurs="0" maxOccurs="unbounded" type="tns:Result" />
+			<element name="association" minOccurs="0" maxOccurs="unbounded" type="tns:Association" />
+			<element name="collection" minOccurs="0" maxOccurs="unbounded" type="tns:Collection" />
+			<element name="discriminator" minOccurs="0" maxOccurs="1" type="tns:Discriminator" />
+		</sequence>
+		<attribute name="id" type="string" use="required" />
+		<attribute name="type" type="string" use="required" />
+		<attribute name="extends" type="string" use="optional" />
+		<attribute name="autoMapping" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="true" />
+					<enumeration value="false" />
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+
+	<complexType name="Property">
+		<attribute name="name" type="string" use="required" />
+		<attribute name="value" type="string" use="required" />
+	</complexType>
+
+	<complexType name="ParameterMap">
+		<sequence minOccurs="0" maxOccurs="1">
+			<element name="parameter" type="tns:Parameter" minOccurs="1" maxOccurs="unbounded" />
+		</sequence>
+		<attribute name="id" type="string" use="required" />
+		<attribute name="type" type="string" use="required" />
+	</complexType>
+
+	<complexType name="Parameter">
+		<attribute name="property" type="string" use="required" />
+		<attribute name="javaType" type="string" use="optional" />
+		<attribute name="jdbcType" type="string" use="optional" />
+		<attribute name="mode" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="IN" />
+					<enumeration value="OUT" />
+					<enumeration value="INOUT" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="resultMap" type="string" use="optional" />
+		<attribute name="scale" type="string" use="optional" />
+		<attribute name="typeHandler" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="Otherwise">
+		<choice>
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+	</complexType>
+
+	<complexType name="Mapper">
+		<choice>
+			<element name="cache-ref" type="tns:Cache-ref" />
+			<element name="cache" type="tns:Cache" />
+			<element name="resultMap" minOccurs="0" maxOccurs="unbounded" type="tns:ResultMap" />
+			<element name="parameterMap" minOccurs="0" maxOccurs="unbounded" type="tns:ParameterMap" />
+			<element name="sql" minOccurs="0" maxOccurs="unbounded" type="tns:Sql" />
+			<element name="select" minOccurs="0" maxOccurs="unbounded" type="tns:Select" />
+			<element name="insert" minOccurs="0" maxOccurs="unbounded" type="tns:Insert" />
+			<element name="update" minOccurs="0" maxOccurs="unbounded" type="tns:Update" />
+			<element name="delete" minOccurs="0" maxOccurs="unbounded" type="tns:Delete" />
+		</choice>
+		<attribute name="namespace" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="Delete">
+		<choice>
+			<element name="include" type="tns:Include" minOccurs="0" maxOccurs="unbounded" />
+            <element name="cDataBegin" type="string" minOccurs="0" maxOccurs="1"></element>
+			<element name="trim" type="tns:Trim" minOccurs="0" maxOccurs="unbounded" />
+			<element name="where" type="tns:Where" minOccurs="0" maxOccurs="unbounded" />
+			<element name="set" type="tns:Set" minOccurs="0" maxOccurs="unbounded" />
+			<element name="foreach" type="tns:Foreach" minOccurs="0" maxOccurs="unbounded" />
+			<element name="choose" type="tns:Choose" minOccurs="0" maxOccurs="unbounded" />
+			<element name="if" type="tns:If" minOccurs="0" maxOccurs="unbounded" />
+			<element name="bind" type="tns:Bind" minOccurs="0" maxOccurs="unbounded" />
+			<element name="cDataEnd" type="string" minOccurs="0" maxOccurs="1"></element>
+		</choice>
+		<attribute name="id" type="string" use="required" />
+		<attribute name="parameterMap" type="string" use="optional" />
+		<attribute name="parameterType" type="string" use="optional" />
+		<attribute name="timeout" type="string" use="optional" />
+		<attribute name="flushCache" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="true" />
+					<enumeration value="false" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="statementType" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="STATEMENT" />
+					<enumeration value="PREPARED" />
+					<enumeration value="CALLABLE" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="databaseId" type="string" use="optional" />
+		<attribute name="lang" type="string" use="optional" />
+	</complexType>
+
+	<complexType name="Cache-ref">
+		<attribute name="namespace" type="string" use="required" />
+	</complexType>
+
+	<complexType name="Cache">
+		<sequence>
+			<element name="property" type="tns:Property" minOccurs="0" maxOccurs="unbounded" />
+		</sequence>
+		<attribute name="type" type="string" use="optional" />
+		<attribute name="eviction" type="string" use="optional" />
+		<attribute name="flushInterval" type="string" use="optional" />
+		<attribute name="size" type="string" use="optional" />
+		<attribute name="readOnly" type="string" use="optional" />
+	</complexType>
+
+	<element name="mapper" type="tns:Mapper"></element>
+
+</schema>

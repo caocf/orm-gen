@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildBasicDao" />
+
+		<buildArtifacts>
+			<artifactSpec>
+				<voSpec pkgName="HIVE">
+					<!-- <dbTableSpec fullName="HIVE.IP_PTY" /> -->
+				</voSpec>
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

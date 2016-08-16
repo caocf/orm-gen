@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方路线" />
+	<property name="rootTableName" value="HIVE.RT_PTY_RTE" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+				<daoSpec shortName="HIVE.RT_PTY_RTE" desc="参与方路线活跃点">
+					<selectSpec subject="RtRteAndActiveLoc" tableName="HIVE.RT_PTY_RTE" defaultOrderBy="updTm" desc="路线活跃点">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<resultFilter begin="AND" attribute="catCd" comparator="=" value="'2601.200'" />
+						<oneToMany listOfSon="rteActiveLocList" fatherAttr="id" sonAttr="ptyRteId">
+							<selectSpec tableName="HIVE.RT_PTY_RTE_LOC" desc="参与方路线与位置之间的关系">
+								<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+								<resultFilter begin="AND" attribute="catCd" comparator="=" value="'2602.200'" />
+								<oneToOne fatherAttr="locId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.LC_LOC" desc="地址信息">
+									</selectSpec>
+								</oneToOne>
+								<oneToOne fatherAttr="locId" sonAttr="id" joinType="inner">
+									<selectSpec tableName="HIVE.LC_GEO_ADDR" desc="地理位置">
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToMany>
+					</selectSpec>	
+					<selectSpec subject="RtPtyRte" tableName="HIVE.RT_PTY_RTE" defaultOrderBy="updTm" desc="参与方路线">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<resultFilter begin="AND" attribute="catCd" comparator="=" value="'2601.200'" />					
+					</selectSpec>
+				</daoSpec>				
+			</artifactSpec>
+		</buildArtifacts>
+	</target>
+</project>

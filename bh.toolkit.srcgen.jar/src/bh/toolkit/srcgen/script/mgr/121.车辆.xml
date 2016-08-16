@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="车辆" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.facility.jar" />
+				</commonAttrSpec>
+				<trxSpec>
+					<mgrSpec shortName="FL.VECL" desc="${cnName}管理">
+						<oprSpec shortName="HIVE.FL_VECL" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.FL_VECL" desc="查询${cnName}" />
+						<daoSpec shortName="HIVE.FL_FCLTY" desc="提交车辆" />
+						<daoSpec shortName="HIVE.IP_ORG" desc="查询${cnName}" />
+						<svcMethodSpec verb="new" subject="Vecl" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230200" desc="新建车辆" />
+						<svcMethodSpec verb="find" subject="VeclList" tableName="HIVE.FL_VECL" returnDataType="java.util.List" expCode="230201" desc="查询车辆信息列表" />
+						<svcMethodSpec verb="count" subject="VeclList" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230202" desc="计算车辆列表总数" />
+						<svcMethodSpec verb="find" subject="VeclDetail" tableName="HIVE.FL_VECL" paramDataType="java.lang.Long" returnDataType="dtox" expCode="230203" desc="查询车辆详情" />
+						
+						<!-- 查询车辆列表，根据车牌排重 ,派单用-->
+						<svcMethodSpec verb="find" subject="AuthorVeclDistinctForDspch" tableName="HIVE.FL_VECL" returnDataType="java.util.List" expCode="230201" desc="查询车辆信息列表" />
+						<svcMethodSpec verb="count" subject="AuthorVeclDistinctForDspch" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230202" desc="计算车辆列表总数" />
+
+						<!-- 查询车辆列表，根据车牌排重，基本资料用 -->
+						<svcMethodSpec verb="find" subject="AuthorVeclDistinctForProfile" tableName="HIVE.FL_VECL" returnDataType="java.util.List" expCode="230201" desc="查询车辆信息列表" />
+						<svcMethodSpec verb="count" subject="AuthorVeclDistinctForProfile" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230202" desc="计算车辆列表总数" />
+
+							
+						<svcMethodSpec verb="change" subject="Vecl" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230205" desc="根据ID修改车辆" />
+						<svcMethodSpec verb="remove" subject="OneVecl" tableName="HIVE.FL_FCLTY" returnDataType="int" expCode="230206" desc="移除一辆车" />
+						<svcMethodSpec verb="remove" subject="MultiVecl" tableName="HIVE.FL_FCLTY" returnDataType="int" expCode="230207" desc="移除多辆车" />
+
+						<svcMethodSpec verb="new" subject="VeclLink" tableName="HIVE.FL_FCLTY_PTY_LINK" returnDataType="int" expCode="230208" desc="新建车辆_LINK" />
+						<svcMethodSpec verb="remove" subject="OneVeclLink" tableName="HIVE.FL_FCLTY_PTY_LINK" returnDataType="int" expCode="230209" desc="移除一辆车_LINK" />
+
+						<svcMethodSpec verb="find" subject="VeclBasic" tableName="HIVE.FL_VECL" returnDataType="com.cbc.model.dto.ext.hive.FlVeclDtoX" expCode="230201" desc="查询车辆基本信息" />
+						<svcMethodSpec verb="new" subject="VeclLoc" tableName="HIVE.FL_FCLTY_LOC" returnDataType="int" expCode="230210" desc="增加车辆最新位置信息" />
+
+						<svcMethodSpec verb="count" subject="AbnormalVecl" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230211" desc="计算异常车辆列表总数" />
+
+						<!-- 启用禁用车辆 -->
+						<svcMethodSpec verb="disable" subject="Vecl" tableName="HIVE.FL_FCLTY" returnDataType="int" expCode="230213" desc="禁用车辆" />
+						<svcMethodSpec verb="enable" subject="Vecl" tableName="HIVE.FL_FCLTY" returnDataType="int" expCode="230214" desc="启用车辆" />
+
+						<!-- 登录账户能看到的司机列表 -->
+						<svcMethodSpec verb="find" subject="AuthorDriver" tableName="HIVE.FL_VECL" returnDataType="java.util.List" expCode="230215" desc="查询司机列表" />
+						<svcMethodSpec verb="count" subject="AuthorDriver" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230216" desc="计算司机列表总数" />
+
+						<!-- 平台管理员admin账号看到的司机列表 -->
+						<svcMethodSpec verb="find" subject="AllDriverByAdmin" tableName="HIVE.FL_VECL" returnDataType="java.util.List" expCode="230217" desc="查询司机列表" />
+						<svcMethodSpec verb="count" subject="AllDriverByAdmin" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230218" desc="计算司机列表总数" />
+
+						<!-- 车辆上的司机列表 -->
+						<svcMethodSpec verb="find" subject="AllDriverOnVecl" tableName="HIVE.FL_VECL" returnDataType="java.util.List" expCode="230219" desc="查询指定车辆上司机列表" />
+						<svcMethodSpec verb="count" subject="AllDriverOnVecl" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230220" desc="计算指定车辆上司机列表总数" />
+						<!--  查询车辆上的司机及货量合计（派单用） -->
+						<svcMethodSpec verb="find" subject="DriversOnVeclForDspch" tableName="HIVE.FL_VECL" paramDataType="java.util.List" returnDataType="java.util.List" expCode="230230" desc="查询车辆上的司机及货量合计（派单用）" />
+
+						<!-- 创建新司机到车辆 -->
+						<svcMethodSpec verb="new" subject="drvrForVecl" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230232" desc="创建新司机到车辆" />
+
+						<!-- 为车辆设置默认司机 -->
+						<svcMethodSpec verb="new" subject="defaultDrvrForVecl" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230233" desc="为车辆设置默认司机" />
+
+						<!-- 移除司机 -->
+						<svcMethodSpec verb="remove" subject="DrvrOnVecl" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230234" desc="移除司机" />
+
+						<!-- 查询司机是否存在 -->
+						<svcMethodSpec verb="count" subject="ExistAuthorDriver" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230235" desc="查询司机是否存在" />
+
+						<!-- 查询司机是否存在 -->
+						<svcMethodSpec verb="find" subject="ExistDriverOnVecl" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230240" desc="查询司机列表" />
+						<svcMethodSpec verb="count" subject="ExistDriverOnVecl" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230241" desc="查询司机是否存在" />
+
+						<!-- 新增车辆最新位置 -->
+						<svcMethodSpec verb="new" subject="VeclLoc" tableName="HIVE.FL_VECL" returnDataType="int" expCode="230242" desc="新增车辆最新位置" />
+
+						<!-- 查询车辆最新位置 -->
+						<svcMethodSpec verb="find" subject="VeclLatestLoc" tableName="HIVE.FL_VECL" returnDataType="java.util.List" expCode="230226" desc="查询车辆最新位置" />
+						
+						<!-- 修改车辆备注信息 -->
+						<svcMethodSpec verb="change" subject="VeclMemo" tableName="HIVE.FL_FCLTY" returnDataType="int" expCode="230205" desc="根据ID修改车辆备注" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

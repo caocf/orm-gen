@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="库存" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.inventory.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="IV.INVEN" desc="${cnName}管理">
+						
+						<daoSpec shortName="HIVE.IV_INVEN" desc="查询${cnName}" />
+						<oprSpec shortName="HIVE.IV_INVEN" desc="新增、修改、删除${cnName}" />
+						<oprSpec shortName="HIVE.IV_INVEN_CHG" desc="新增、修改、删除库存变更" />
+
+						<svcMethodSpec verb="add" subject="Inventory" tableName="HIVE.IV_INVEN" returnDataType="int" expCode="210005" desc="增加库存" />
+						<svcMethodSpec verb="find" subject="InventoryDetail" tableName="HIVE.IV_INVEN" paramDataType="java.lang.Long" returnDataType="dtox" expCode="211000" desc="查询库存详细信息" />
+						<svcMethodSpec verb="find" subject="InventoryList" tableName="HIVE.IV_INVEN" returnDataType="java.util.List" expCode="211005" desc="查询库存信息列表" />
+						<svcMethodSpec verb="count" subject="InventoryList" tableName="HIVE.IV_INVEN" returnDataType="int" expCode="211006" desc="计算库存信息数量" />
+						<svcMethodSpec verb="find" subject="InventoryListByBatch" tableName="HIVE.IV_INVEN" returnDataType="java.util.List" expCode="211010" desc="查询库存信息列表-按照批次汇总" />
+						<svcMethodSpec verb="find" subject="InventoryListByPtyGoods" tableName="HIVE.IV_INVEN" returnDataType="java.util.List" expCode="211015" desc="查询库存信息列表-按照商品汇总" />
+						<svcMethodSpec verb="find" subject="InventoryListByPtyGoodsStorLoc" tableName="HIVE.IV_INVEN" returnDataType="java.util.List" expCode="211020" desc="查询库存信息列表-按照商品货位汇总" />
+						
+						<svcMethodSpec verb="find" subject="ValidInventoryList" tableName="HIVE.IV_INVEN" returnDataType="java.util.List" expCode="211007" desc="查询有效（未刪除）库存信息列表" />
+						<svcMethodSpec verb="count" subject="ValidInventoryList" tableName="HIVE.IV_INVEN" returnDataType="int" expCode="211008" desc="查询有效（未刪除）库存信息列表" />
+
+						<svcMethodSpec verb="move" subject="Inventory" tableName="HIVE.IV_INVEN_CHG" returnDataType="int" expCode="210264" desc="库存移动" />
+						<svcMethodSpec verb="adjust" subject="InStockNote" tableName="HIVE.IV_INVEN" returnDataType="int" expCode="210292" desc="库存调整" />
+						<svcMethodSpec verb="innerTransfer" subject="Inventory" tableName="HIVE.IV_INVEN" returnDataType="int" expCode="210316" desc="库存内部转移" />
+						<svcMethodSpec verb="freeze" subject="Inventory" tableName="HIVE.IV_INVEN" returnDataType="int" expCode="210400" desc="库存冻结" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

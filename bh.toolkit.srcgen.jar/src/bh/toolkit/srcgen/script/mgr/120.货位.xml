@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="货位" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.facility.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="FL.PTY_STOR_LOC" desc="${cnName}管理">
+
+						<oprSpec shortName="HIVE.FL_PTY_STOR_LOC" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.FL_PTY_STOR_LOC" desc="查询${cnName}" />
+
+						<svcMethodSpec verb="new" subject="PtyStorLoc" tableName="HIVE.FL_PTY_STOR_LOC" returnDataType="int" expCode="140100" desc="新增参与方货位" />
+						<svcMethodSpec verb="find" subject="PtyStorLocList" tableName="HIVE.FL_PTY_STOR_LOC" returnDataType="java.util.List" expCode="140102" desc="查询参与方货位列表" />
+						<svcMethodSpec verb="count" subject="PtyStorLocList" tableName="HIVE.FL_PTY_STOR_LOC" returnDataType="int" expCode="140104" desc="计算参与方货位列表总数" />
+						<svcMethodSpec verb="find" subject="PtyStorLocDetail" tableName="HIVE.FL_PTY_STOR_LOC" paramDataType="java.lang.Long" returnDataType="dtox" expCode="140106" desc="查询参与方货位详情" />
+						<svcMethodSpec verb="change" subject="PtyStorLocDetail" tableName="HIVE.FL_PTY_STOR_LOC" returnDataType="int" expCode="140108" desc="修改参与方货位详情" />
+						
+						<svcMethodSpec verb="find" subject="WhseWithLoc" tableName="HIVE.FL_PTY_WHSE" returnDataType="java.util.List" expCode="140110" desc="根据地点查询仓库" />
+						<svcMethodSpec verb="find" subject="StorLocWithWhse" tableName="HIVE.FL_PTY_STOR_LOC" returnDataType="java.util.List" expCode="140112" desc="根据仓库查货位" />
+						
+						<svcMethodSpec verb="remove" subject="PtyStorLoc" tableName="HIVE.FL_PTY_STOR_LOC" returnDataType="int" expCode="140120" desc="移除参与方货位" />
+
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

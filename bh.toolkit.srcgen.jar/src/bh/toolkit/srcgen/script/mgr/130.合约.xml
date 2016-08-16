@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="合约" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.argmt.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="AR.ARGMT" desc="${cnName}管理">
+
+						<daoSpec shortName="HIVE.CM_SYS_PARAM" desc="查询公共系统参数" />
+						<daoSpec shortName="HIVE.CM_PTY_SYS_PARAM" desc="查询参与方系统参数" />
+
+						<svcMethodSpec verb="get" subject="CmInStockNoteCd" tableName="HIVE.CM_SYS_PARAM" returnDataType="java.lang.String" expCode="200010" desc="获取公共入库单（收货单）号" />
+						<svcMethodSpec verb="get" subject="PtyInStockNoteCd" tableName="HIVE.CM_PTY_SYS_PARAM" returnDataType="java.lang.String" expCode="200011" desc="获取参与方入库单（收货单）号" />
+
+						<svcMethodSpec verb="get" subject="CmOutStockNoteCd" tableName="HIVE.CM_SYS_PARAM" returnDataType="java.lang.String" expCode="200020" desc="获取公共出库单（收货单）号" />
+						<svcMethodSpec verb="get" subject="PtyOutStockNoteCd" tableName="HIVE.CM_PTY_SYS_PARAM" returnDataType="java.lang.String" expCode="200021" desc="获取参与方出库单（收货单）号" />
+						<svcMethodSpec verb="update" subject="Argmt" tableName="HIVE.AR.ARGMT" paramDataType="com.cbc.model.dto.ext.hive.ArArgmtDtoX" returnDataType="int" expCode="200022" desc="更新订单状态" />
+						<svcMethodSpec verb="select" subject="Argmt" tableName="HIVE.AR.ARGMT" paramDataType="com.cbc.model.dto.ext.hive.ArArgmtDtoX" returnDataType="int" expCode="200023" desc="获取订单基本信息" />
+					
+						<svcMethodSpec verb="update" subject="ArgmtItem" tableName="HIVE.AR.ARGMT" paramDataType="com.cbc.model.dto.ext.hive.ArArgmtItmDtoX" returnDataType="int" expCode="200024" desc="更新订单明细" />
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

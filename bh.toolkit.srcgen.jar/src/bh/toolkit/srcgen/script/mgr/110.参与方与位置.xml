@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="参与方与位置" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- 对配置参数的个性化 -->
+				<commonAttrSpec>
+					<workspaceSpec mgrPrj="com.cbc.svc.community.jar" />
+				</commonAttrSpec>
+
+				<trxSpec>
+					<mgrSpec shortName="LC.PTY_LOC" desc="${cnName}管理">
+						<oprSpec shortName="HIVE.LC_PTY_LOC" desc="新增、修改、删除${cnName}" />
+						<daoSpec shortName="HIVE.LC_PTY_LOC" desc="查询${cnName}" />
+
+						<daoSpec shortName="HIVE.LC_PTY_ACCT_LOC" desc="查询${cnName}" />
+
+						<svcMethodSpec verb="new" subject="PtyAcctLoc" tableName="HIVE.LC_PTY_ACCT_LOC" returnDataType="int" expCode="110090" desc="新增参与方帐号位置" />
+						<svcMethodSpec verb="find" subject="PtyAcctLocList" tableName="HIVE.LC_PTY_ACCT_LOC" returnDataType="java.util.List" expCode="110100" desc="参与方帐号位置列表" />
+						<svcMethodSpec verb="count" subject="PtyAcctLocList" tableName="HIVE.LC_PTY_ACCT_LOC" returnDataType="int" expCode="111102" desc="计算参与方帐号位置的总数" />
+						<svcMethodSpec verb="change" subject="PtyAcctLoc" tableName="HIVE.LC_PTY_ACCT_LOC" returnDataType="int" expCode="110105" desc="修改参与方帐号位置" />
+						<svcMethodSpec verb="remove" subject="PtyAcctLoc" tableName="HIVE.LC_PTY_ACCT_LOC" returnDataType="int" expCode="110110" desc="移除参与方帐号位置" />
+						<svcMethodSpec verb="change" subject="PtyLoc" tableName="HIVE.LC_PTY_LOC" returnDataType="int" expCode="110105" desc="修改参与方帐号位置" />
+					</mgrSpec>
+				</trxSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

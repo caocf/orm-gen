@@ -1,0 +1,127 @@
+package bh.toolkit.srcgen.lang;
+
+public class MapperElm {
+
+	public static final int MAPPER_MAX_WIDTH = 150;
+	public static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
+	public static final String MAPPER_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" + JavaSrcElm.LINE_SEPARATOR
+			+ "<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">";
+	public static final String MAPPER_NAME_SPACE = "xmlns=\"http://slp/toolkit/ormgen/model/mybatis\"";
+	public static final String CDATABEGIN_ELM_BEGIN = "<cDataBegin>";
+	public static final String CDATABEGIN_ELM_END = "</cDataBegin>";
+	public static final String CDATAEND_ELM_BEGIN = "<cDataEnd>";
+	public static final String CDATAEND_ELM_END = "</cDataEnd>";
+	public static final String CDATA_ANCHOR_BEGIN = "${CDATA-BEGIN}";
+	public static final String CDATA_ANCHOR_END = "${CDATA-END}";
+	public static final String CDATA_LABEL_BEGIN = "<![CDATA[ ";
+	public static final String CDATA_LABEL_END = " ]]>";
+	public static final String LESS_THAN_ANCHOR = "${less}";
+	public static final String GREATER_THAN_ANCHOR = "${greater}";
+	public static final String SQL_LESS_THAN = "<";
+	public static final String SQL_GREATER_THAN = ">";
+	public static final String AFTER = "AFTER";
+	public static final String DB2_IDENTITY_VAL = "values (identity_val_local())";
+	public static final String MYSQL_IDENTITY_VAL = "SELECT LAST_INSERT_ID()";
+
+	public static final String RESULT_MAP_ONE_TO_ONE = "Oto";
+	public static final String RESULT_MAP_ONE_TO_MANY = "Otm";
+
+	public static final String MAPPER_FILENAME_EXT = ".xml";
+	public static final String MAPPER_RESULT_MAP = "ResultMap";
+	public static final String MAPPER_SQL = "sql:";
+	public static final String MAPPER_PK_VAL_ID = "id";
+	public static final String MAPPER_ANCHOR_ID = "#{id}";
+	public static final String MAPPER_ALL = "All";
+	public static final String MAPPER_SELECTIVE = "Selective";
+	public static final String MAPPER_COL = "Column";
+	public static final String MAPPER_COL_NM = "ColumnName";
+	public static final String MAPPER_COL_ALIAS = "ColumnAlias";
+	public static final String MAPPER_FROM = "From";
+	public static final String MAPPER_VALUE = "Value";
+	public static final String MAPPER_SELECT_FROM = "SelectFrom";
+	public static final String MAPPER_BYPK = "ByPK";
+	public static final String MAPPER_BYSQL = "BySql";
+	public static final String MAPPER_TM_LCK = "TmLck";
+	public static final String MAPPER_BATCH = "InBatch";
+	public static final String MAPPER_WITH_PK = "WithPK";
+	public static final String MAPPER_WITHOUT_PK = "WithoutPK";
+
+	public static final String TM_LCK_CLAUSE = " and (UPD_TM = #{oldValue.updTm} or UPD_TM is null)";
+	public static final String DELETE_TM_LCK_CLAUSE = " and (UPD_TM = #{updTm} or UPD_TM is null)";
+	//	public static final String ANCHOR_ORDERBY_CLAUSE = "${orderByClause}";
+	//	public static final String ANCHOR_WHERE_CLAUSE = "${whereClause}";
+	public static final String ANCHOR_MAPPERSQL_WHERE_CLAUSE = "${mapperSqlClause.whereClause}";
+	public static final String ANCHOR_MAPPERSQL_ORDERBY_CLAUSE = "${mapperSqlClause.orderByClause}";
+	public static final String EXPR_ORDERBY_CLAUSE_ISNOT_NULL = "mapperSqlClause.orderByClause != null";
+	public static final String EXPR_WHERE_CLAUSE_ISNOT_NULL = "mapperSqlClause.whereClause != null";
+	public static final String FETCH_FIRST_ROWS = "fetch first ${dfltMaxRow} rows only";
+	public static final String LIMIT_ROWS = "limit ${mapperSqlClause.dfltMaxRow}";
+	public static final String ANCHOR_START_ROW = "#{mapperSqlClause.startRow}";
+	public static final String ANCHOR_PAGE_SIZE = "#{mapperSqlClause.pageSize}";
+	public static final String ANCHOR_END_ROW = "#{mapperSqlClause.endRow}";
+	//	public static final String ANCHOR_LIMIT_BEG_ROW = "#{limitBegRow}";
+	//	public static final String ANCHOR_LIMIT_ROW_CNT = "#{limitRowCnt}";
+	public static final String ATTR_START_ROW = "mapperSqlClause.startRow";
+	public static final String ATTR_PAGE_SIZE = "mapperSqlClause.pageSize";
+	public static final String ATTR_END_ROW = "mapperSqlClause.endRow";
+	//	public static final String ATTR_LIMIT_BEG_ROW = "limitBegRow";
+	//	public static final String ATTR_LIMIT_ROW_CNT = "limitRowCnt";
+	public static final String ATTR_USER_IDENTITY = "userIdentity";
+	//	public static final String ATTR_CORP_CAT_CD = "userIdentity.corpIpCatCd";
+	//	public static final String ANCHOR_CORP_IP_PK = "${userIdentity.corpIpPk}";
+
+	public static final String SQL_INSERT_INTO = "insert into";
+	public static final String SQL_COUNT = "count";
+	public static final String SQL_INSERT = "insert";
+	public static final String SQL_SELECT = "select";
+	public static final String SQL_UPDATE = "update";
+	public static final String SQL_DELETE = "delete";
+	public static final String SQL_VALUES_FULL = " values ";
+	public static final String SQL_VALUES_SIMPLE = "values";
+	public static final String SQL_SET = "set";
+	public static final String SQL_FROM_FULL = " from ";
+	public static final String SQL_FROM_WHITE_SPACE = "from ";
+	public static final String SQL_WHERE_FULL = " where ";
+	public static final String SQL_WHERE_SIMPLE = "where";
+	public static final String SQL_AND_FULL = " and ";
+	public static final String SQL_AND_SIMPLE = "and";
+	public static final String SQL_OR_FULL = " or ";
+	public static final String SQL_AND_OR = "and |or ";
+	public static final String SQL_ORDERBY_SIMPLE = "order by";
+	public static final String SQL_JOIN = " join ";
+	public static final String SQL_JOIN_INNER = "inner";
+	public static final String SQL_JOIN_LEFT = "left";
+	public static final String SQL_JOIN_RIGHT = "right";
+	public static final String SQL_JOIN_FULL = "full";
+	public static final String SQL_JOIN_ON = " on ";
+	public static final String SQL_IN = " in ";
+	public static final String SQL_TABLE_NAME_PREFIX = "T_";
+	public static final String SQL_AS = "as";
+	public static final String SQL_RN = "RN";
+	public static final String SQL_ROW_NUMBER = "ROW_NUMBER()";
+	public static final String SQL_OVER = "over";
+	public static final String SQL_BETWEEN = " between ";
+	public static final String SQL_LIMIT = "limit";
+
+	public static final String WHITE_SPACE = " ";
+	public static final String UNDER_LINE = "_";
+	public static final String DOUBLE_UNDER_LINE = "__";
+	public static final String LEFT_PARENTHESIS = "(";
+	public static final String RIGHT_PARENTHESIS = ")";
+	public static final String LEFT_BRACKET = "{";
+	public static final String RIGHT_BRACKET = "}";
+	public static final String LEFT_SQUARE_BRACKET = "[";
+	public static final String RIGHT_SQUARE_BRACKET = "]";
+	public static final String MINUS = " - ";
+	public static final String COMMA = ",";
+	public static final String POUND = "#";
+	public static final String COLON = ":";
+	public static final String STAR = "*";
+	public static final String DOUBLE_QUOTATION = "\"";
+	public static final String EQUAL = " = ";
+	public static final String DOT = ".";
+	public static final String NOT_AVAILABLE = "N/A";
+
+	public static final String FOR_EACH_COLLECTION_LIST = "list";
+	public static final String FOR_EACH_INDEX = "index";
+}

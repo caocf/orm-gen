@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="库存内部转移单" />
+	<property name="rootTableName" value="HIVE.AR_INVEN_INTNL_TRANSF_REQT" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- DAO接口说明，shortName决定了DAO的名称 -->
+				<daoSpec shortName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" desc="${cnName}">
+					<selectSpec subject="InvenIntnlTransfReqt" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" defaultOrderBy="updTm" desc="查看库存内部转移单">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<oneToOne fatherAttr="id" sonAttr="id">
+							<selectSpec tableName="HIVE.AR_ARGMT">
+								<oneToOne fatherAttr="id" sonAttr="id">
+									<selectSpec tableName="HIVE.AR_ARGMT_PTY_LOC_LINK">
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+					<selectSpec subject="InvenIntnlTransfReqtItm" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT_ITM" defaultOrderBy="updTm" desc="查看库存内部转移单明细">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<oneToOne fatherAttr="id" sonAttr="id">
+							<selectSpec tableName="HIVE.AR_ARGMT_ITM">
+								<oneToOne fatherAttr="id" sonAttr="id">
+									<selectSpec tableName="HIVE.AR_ARGMT_ITM_LINK">
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+				</daoSpec>
+
+				<!-- OPR接口说明 ，oprSpec的shortName决定了OPR接口的名称-->
+				<oprSpec shortName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" desc="${cnName}数据操作">
+
+					<addSpec subject="InvenIntnlTransfReqt" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" desc="新增${cnName}">
+						<insertSpec tableName="HIVE.AR_ARGMT" desc="合约" enableSelectKey="true" insertExpr="catCd=CmCatSysCode.ArgmtInvenIntnlTransfReqt; editFlag=CmCatSysCode.RevisionNew.cd()">
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT" desc="库存内部转移单" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+								</insertSpec>
+							</oneToOne>
+							<oneToOne fatherAttr="id" sonAttr="id">
+								<insertSpec tableName="HIVE.AR_ARGMT_PTY_LOC_LINK" desc="合约的关联参与方" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+								</insertSpec>
+							</oneToOne>
+						</insertSpec>
+					</addSpec>
+
+					<addSpec subject="InvenIntnlTransfReqtItm" tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT_ITM" desc="新增库存内部转移单明细">
+						<insertSpec tableName="HIVE.AR_ARGMT"
+						            desc="合约"
+						            enableSelectKey="true"
+						            insertExpr="catCd=CmCatSysCode.ArgmtInvenIntnlTransfReqt; editFlag=CmCatSysCode.RevisionNew.cd()"
+						            skipVerb="insert,update">
+							<oneToOne fatherAttr="id" sonAttr="argmtId">
+								<insertSpec tableName="HIVE.AR_ARGMT_ITM" desc="合约项" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+									<oneToOne fatherAttr="id" sonAttr="id">
+										<insertSpec tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT_ITM" desc="库存内部转移单明细" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+										</insertSpec>
+									</oneToOne>
+									<oneToOne fatherAttr="id" sonAttr="id">
+										<insertSpec tableName="HIVE.AR_ARGMT_ITM_LINK" desc="合约项关联的合约" insertExpr="editFlag=CmCatSysCode.RevisionNew.cd()">
+										</insertSpec>
+									</oneToOne>
+								</insertSpec>
+							</oneToOne>
+
+						</insertSpec>
+					</addSpec>
+
+					<removeSpec tableName="${rootTableName}" desc="删除${cnName}">
+					</removeSpec>
+					<removeSpec tableName="HIVE.AR_INVEN_INTNL_TRANSF_REQT_ITM" desc="删除${cnName}明细">
+					</removeSpec>
+
+				</oprSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>

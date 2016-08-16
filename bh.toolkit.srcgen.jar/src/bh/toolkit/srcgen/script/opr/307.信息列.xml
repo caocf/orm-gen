@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="theProject" default="theTarget">
+
+	<!-- Attributes used by this task -->
+	<property name="cnName" value="信息列" />
+	<property name="rootTableName" value="HIVE.RC_INFO_COL" />
+
+	<!-- The task definition -->
+	<target name="theTarget">
+
+		<taskdef name="buildArtifacts" classname="bh.toolkit.srcgen.task.BuildTrx" />
+
+		<buildArtifacts>
+			<artifactSpec>
+
+				<!-- DAO接口说明，shortName决定了DAO的名称 -->
+				<daoSpec shortName="${rootTableName}" desc="${cnName}">
+
+					<!-- 结果集信息列 -->
+					<selectSpec subject="InfoCol" tableName="HIVE.RC_INFO_COL" defaultOrderBy="updTm" desc="查询信息列">
+						<resultFilter attribute="editFlag" comparator="${less}${greater}" value="'1100.210'" />
+						<oneToOne fatherAttr="id" sonAttr="id">
+							<selectSpec tableName="HIVE.RC_RSRC">
+								<oneToOne fatherAttr="id" sonAttr="rightId">
+									<selectSpec tableName="HIVE.SC_PERMISSION">
+										<oneToOne fatherAttr="leftId" sonAttr="id">
+											<selectSpec tableName="HIVE.SC_ROLE">
+												<oneToOne fatherAttr="id" sonAttr="roleId">
+													<selectSpec tableName="HIVE.SC_PTY_ACCT_ROLE">
+														<oneToOne fatherAttr="ptyAcctId" sonAttr="id">
+															<selectSpec tableName="HIVE.IP_PTY_ACCT">
+															</selectSpec>
+														</oneToOne>
+													</selectSpec>
+												</oneToOne>
+											</selectSpec>
+										</oneToOne>
+									</selectSpec>
+								</oneToOne>
+							</selectSpec>
+						</oneToOne>
+					</selectSpec>
+				</daoSpec>
+
+			</artifactSpec>
+		</buildArtifacts>
+
+	</target>
+
+</project>
