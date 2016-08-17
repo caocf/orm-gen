@@ -1,3 +1,3 @@
-# orm-gen
+# What & Why, and a little bit Worry
 从百度或Google上搜一搜，实现面向MyBatis ORM的IDE Plugin或工具已经很多。但我没找到一款针对多表关联查询，或者级联增加/更新问题解决地比较好的。
 于是，我就自己写了一个。也许，我在发明轮子...
